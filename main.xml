@@ -1,0 +1,16 @@
+<scene version="1.1.0" shadowVolume="200 50 200">
+	<environment template="sunset"/>
+	<script file="main.lua"/>
+	<script file="sandbox.lua"/>
+	<spawnpoint pos="-10.0 38.3 0.0" rot="0 180 0"/>
+	<body tags="planet gravity=100" pos="0.0 43.4 0.0" dynamic="false">
+		<vox pos="0.0" file="MOD/vox/ball.vox"/>
+	</body>
+	<script pos="0.0 37.4 0.0" file="MOD/script/player.lua">
+		<body tags="player" pos="0.5 0.9 0.5" dynamic="true">
+			<voxbox tags="unbreakable" pos="-0.05 -0.05 -0.05" collide="true" size="1"/>
+		</body>
+	</script>
+	<voxbox/>
+</scene>
+
