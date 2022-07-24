@@ -30,6 +30,7 @@ function playerInit()
     for i=1,#shapes do 
         SetShapeCollisionFilter(shapes[i], 2,0)
     end
+    player.camera = "camera" 
 end
 
 function planetsUpdate()
@@ -63,13 +64,7 @@ function playerUpdate(dt)
     player.pitch = player.pitch + cameray
     player.pitch = clamp(player.pitch, -80, 80)
     -- clamp pitch between 80 and -80
-    if InputPressed("h") then 
-        if player.camera == false then 
-            player.camera = true
-        else
-            player.camera = false
-        end
-    end
+
     local hit, shape, point = IsPlayerOnGround()
     player.contactPoint = point
 end
@@ -94,6 +89,9 @@ function debugPlayer(dt)
     DebugWatch("vel",VecLength(player.vel))
     DebugWatch("player.pitch",player.pitch)
 
+    local x,y,z = GetQuatEuler(player.rot)
+    DebugWatch("player.rot.x",Vec(x,y,z))
+
  
     DebugCross(player.contactPoint,1,1,1,1)
     DebugLine(player.HeadPos,TransformToParentPoint(player.HeadTransform,Vec(0,-1,0)))
@@ -102,27 +100,27 @@ end
 
 
 function playerController()
-    if player.camera then
+    if player.camera ~= "independent" then
         if InputDown("w") and IsPlayerOnGround() then 
-            player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0,0,-0.2)))
+            player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0,0,-0.25)))
         elseif InputDown("w") and IsPlayerOnGround() == false then 
             player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0,0,-0.05)))
         end
 
         if InputDown("s") and IsPlayerOnGround() then 
-            player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0,0,0.2)))
+            player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0,0,0.25)))
         elseif InputDown("s") and IsPlayerOnGround() == false then
             player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0,0,0.05)))
         end
 
         if InputDown("a") and IsPlayerOnGround() then 
-            player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(-0.2,0,0)))
+            player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(-0.25,0,0)))
         elseif InputDown("a") and IsPlayerOnGround() == false then
             player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(-0.05,0,0)))
         end
 
         if InputDown("d") and IsPlayerOnGround() then 
-            player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0.2,0,0)))
+            player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0.25,0,0)))
         elseif InputDown("d") and IsPlayerOnGround() == false then
             player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0.05,0,0)))
         end
@@ -142,7 +140,15 @@ function  update(dt)
     debugPlayer()
 end
 
+
+prevRot = Quat(0,0,0,1)
 function playerPhysicsUpdate(dt)
+
+    local hit, shape, point = IsPlayerOnGround()
+    local planetBody = GetShapeBody(shape)
+    local t = GetBodyTransform(planetBody)
+
+    SetBodyAngularVelocity(player.body,(GetBodyAngularVelocity(planetBody)))
 
     -------------------------------------------------- Player Gravity Align --------------------------------------------------
     local min, max = GetBodyBounds(player.planetParent)
@@ -166,7 +172,7 @@ function playerPhysicsUpdate(dt)
     player.vel = VecScale(player.vel,0.99)
 
     -------------------------------------------------- Player Planet Friction --------------------------------------------------
- local hit, shape, point = IsPlayerOnGround()
+   local hit, shape, point = IsPlayerOnGround()
    local planetBody = GetShapeBody(shape)
    if hit and HasTag(planetBody,"planet") then
         local FinalVel = GetBodyVelocityAtPos(planetBody,point)
@@ -187,12 +193,17 @@ function playerPhysicsUpdate(dt)
 
      --SetPlayerTransform(t,true)
 
-    if VecLength(player.vel) < 0.3 and hit then 
+    if VecLength(player.vel) < 0.2 and hit then 
         player.vel = 0
         ConstrainPosition(player.body,0,player.pos,player.pos)
     end
 
-    SetBodyVelocity(player.body,player.vel)
+    if GetPlayerVehicle() ~= 0 then
+        ConstrainPosition(player.body,0,player.pos, GetBodyTransform((GetVehicleBody(GetPlayerVehicle()))).pos)
+    else
+        SetBodyVelocity(player.body,player.vel)
+    end
+
 
 end
 
@@ -216,13 +227,21 @@ end
 
 function updatePlayerCamera(dt)
         -------------------------------------------------- Player Camera --------------------------------------------------
-    local pos = TransformToParentPoint(player.HeadTransform,Vec(0,0,-1))
-    local rot = QuatRotateQuat(player.rot,QuatEuler(player.pitch,0,0))
-    local t = Transform(pos,rot)
-    if player.camera then
+
+    if player.camera == "camera" then
+        local pos = TransformToParentPoint(player.HeadTransform,Vec(0,0,0))
+        local rot = QuatRotateQuat(player.rot,QuatEuler(player.pitch,0,0))
+        local t = Transform(pos,rot)
+
         SetCameraTransform(t)
-    else
+    elseif player.camera == "independent" then
         DebugLine(GetPlayerTransform().pos,player.HeadPos)
+    elseif player.camera == "player" then    
+        local pos = VecAdd(TransformToParentPoint(player.HeadTransform,Vec(0,0,0)),Vec(0,-1.8,0))
+        local rot = QuatRotateQuat(player.rot,QuatEuler(player.pitch,0,0))
+        local t = Transform(pos,rot)
+        
+        SetPlayerTransform(t, true) -- Doesnt work. Well it does, but it has issues
     end
     
 end
@@ -231,6 +250,15 @@ function tick(dt)
     updatePlayerCamera(dt)
     --SetPlayerVelocity(VecAdd(vel,VecScale(dir,1)))
     --SetPlayerTransform(Transform(GetPlayerTransform().pos,QuatEuler(-180,0,0)),true)
+    if InputPressed("h") then 
+        if player.camera == "camera" then 
+            player.camera = "player"
+        elseif player.camera == "player" then
+            player.camera = "independent"
+        elseif player.camera == "independent" then
+            player.camera = "camera"
+        end
+    end
 end
 
 function draw(dt)
