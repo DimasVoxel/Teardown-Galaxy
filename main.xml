@@ -1,16 +1,19 @@
-<scene version="1.1.0" shadowVolume="200 50 200">
-	<environment template="sunset"/>
+<scene version="1.1.0" shadowVolume="200 200 200">
 	<script file="main.lua"/>
 	<script file="sandbox.lua"/>
-	<spawnpoint pos="-10.0 38.3 0.0" rot="0 180 0"/>
-	<body tags="planet gravity=100" pos="0.0 43.4 0.0" dynamic="false">
-		<vox pos="0.0" file="MOD/vox/ball.vox"/>
+	<spawnpoint pos="1.5 76.7 0.0" rot="0 180 0"/>
+	<body tags="planet mass=1000" pos="12.2 45.6 -60.1" dynamic="false">
+		<voxbox pos="-12.2 -12.7 -13.1" size="256 256 256" brush="MOD/vox/ball.vox" object="planet" color="0.64 0.97 0.68"/>
 	</body>
-	<script pos="0.0 37.4 0.0" file="MOD/script/player.lua">
-		<body tags="player" pos="0.5 0.9 0.5" dynamic="true">
+	<body tags="planet mass=2000" pos="25.2 36.1 22.9" dynamic="false">
+		<voxbox pos="-13.0 -12.6 -12.6" size="256 256 256" brush="MOD/vox/ball.vox" object="planet" color="0.64 0.87 0.97"/>
+	</body>
+	<script pos="0.0 50.30001 10.5" file="MOD/script/player.lua">
+		<body tags="player" pos="0.0" dynamic="true">
 			<voxbox tags="unbreakable" pos="-0.05 -0.05 -0.05" collide="true" size="1"/>
 		</body>
 	</script>
-	<voxbox/>
+	<environment template="sunset" pos="0.0 71.0 50.4" skybox="cold_sunset.dds" skyboxtint="0.61 0.76 0.92 " skyboxbrightness="1 " skyboxrot="300 " constant="0.003 0.003 0.003 " ambient="0.7" ambientexponent="10" fogColor="1 0.9 0.6" fogParams="40 500 1 8" sunBrightness="5" sunColorTint="0.66 0.84 0.99" sunSpread="0.2" sunLength="64" sunFogScale="2" sunGlare="0.4" exposure="0 0.3" brightness="3 " wetness="0 " puddleamount="0 " puddlesize="0.5 " rain="0 " nightlight="true " ambience="outdoor/caribbean_ocean.ogg 1 " fogscale="1 " slippery="0 " waterhurt="0 " snowdir="0 -1 0 0.2 " snowamount="0 0 " wind="0 0 0 "/>
+	<postprocessing pos="0.0 0.1 0.0" colorbalance="0.8 0.9 0.8" brightness="5" gamma="1.1" bloom="0.4"/>
 </scene>
 

@@ -1,3 +1,5 @@
+#include helper.lua
+
 function init()
     planets = {}
     playerInit()
@@ -11,9 +13,10 @@ function playerInit()
     player.pos = player.transform.pos
     player.rot = player.transform.rot
     player.pitch = 0
-    local min,max = GetBodyCenterOfMass(player.body)
-    player.center = VecLerp(min,max,0.5)
+    local min, max GetBodyBounds(player.body)
+    player.center = TransformToParentPoint(player.transform, VecLerp(min,max,0.5))
     player.planetParent = 0 
+    player.camera = true
 end
 
 function planetsUpdate()
@@ -21,42 +24,50 @@ function planetsUpdate()
     for num,planetBody in pairs(planetBodies) do
         local planet = {}
         planet.body = planetBody
-        local min, max = GetBodyCenterOfMass(planet)
-        planet.center = VecLerp(min,max,0.5)
-        planet.strength = GetTagValue(planetBody, 'gravity')
         planet.transform = GetBodyTransform(planetBody)
+        local min, max GetBodyBounds(planetBody)
+        planet.center = TransformToParentPoint(planet.transform, VecLerp(min,max,0.5))
+        planet.mass = tonumber(GetTagValue(planetBody, 'mass'))
         planets[num] = planet 
     end 
 end
 
-function playerUpdate()
+function playerUpdate(dt)
     -------------------------------------------------- Player State --------------------------------------------------
     player.transform = GetBodyTransform(player.body)
     player.pos = player.transform.pos
     player.rot = player.transform.rot
-    local min,max = GetBodyCenterOfMass(player.body)
-    player.center = VecLerp(min,max,0.5)
+    player.center = TransformToParentPoint(player.transform, GetBodyCenterOfMass(player.body))
     local vel = GetBodyVelocity(player.body)
-    player.vel = VecAdd(vel,Vec(0,0.165,0)) -- kind of counteract gravity
-
-    local cameray = InputValue('cameray')*-40
+    player.vel = VecAdd(vel,Vec(0, 10*dt, 0))-- kind of counteract gravity
+    local cameray = InputValue('cameray')*-40 
     player.pitch = player.pitch + cameray
     player.pitch = clamp(player.pitch, -80, 80)
     -- clamp pitch between 80 and -80
+    if InputPressed("h") then 
+        if player.camera == false then 
+            player.camera = true
+        else
+            player.camera = false
+        end
+    end
 end
 
 function planetGravity(dt)
     local prevStr = 0
     for i=1,#planets do
         local planet = planets[i]
-        local dir = VecNormalize(VecSub(planet.center,player.pos))
+        local dir = VecNormalize(VecSub(planet.center,player.center))
         local dist = VecDist(planet.center,player.pos)
-        local strength = planet.strength/(dist*dist)
-        DebugPrint(strength)
+        local gravConst = 1
+        local strength = dt*(gravConst*planet.mass / (dist * dist))
         player.vel = VecAdd(player.vel,VecScale(dir,strength))
-        if prevStr > strength then 
+
+        if prevStr < strength then  
             player.planetParent = planet.body
+            prevStr = strength
         end
+  
     end
 end
 
@@ -64,51 +75,55 @@ function debugPlayer(dt)
     DebugWatch("vel",VecLength(player.vel))
     DebugWatch("player.pitch",player.pitch)
 
+    DebugLine(player.pos,VecAdd(player.pos,player.vel),1,0,1,1)
         
     --DebugLine(player.pos,TransformToParentPoint(player.transform,Vec(0,-1,0)))
    -- DebugLine(player.pos,TransformToParentPoint(player.transform,Vec(0,0,-1)),0,1,1,1)
 end
 
-function playerCameraUpdate()
-    local pos = TransformToParentPoint(player.transform,Vec(0,0,-0.2))
-    local rot = QuatRotateQuat(player.rot,QuatEuler(player.pitch,0,0))
-    local t = Transform(pos,rot)
-
-   
-   --SetPlayerTransform(t,true)
-   DebugLine(GetPlayerTransform().pos,player.pos)
-   SetCameraTransform(t)
-end
 
 function playerController()
 
     if InputDown("w") and IsPlayerOnGround() then 
         player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0,0,-0.2)))
+    elseif InputDown("w") and IsPlayerOnGround() == false then 
+        player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0,0,-0.05)))
     end
+
     if InputDown("s") and IsPlayerOnGround() then 
         player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0,0,0.2)))
+    elseif InputDown("s") and IsPlayerOnGround() == false then
+        player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0,0,0.05)))
     end
+
     if InputDown("a") and IsPlayerOnGround() then 
         player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(-0.2,0,0)))
+    elseif InputDown("a") and IsPlayerOnGround() == false then
+        player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(-0.05,0,0)))
     end
+
     if InputDown("d") and IsPlayerOnGround() then 
         player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0.2,0,0)))
+    elseif InputDown("d") and IsPlayerOnGround() == false then
+        player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0.05,0,0)))
     end
+
     if InputDown("space") and IsPlayerOnGround() then 
-        ConstrainVelocity(player.body,0,player.pos,TransformToParentVec(player.transform,Vec(0,1,0)),1,10)
+        ConstrainVelocity(player.body,0,player.pos,TransformToParentVec(player.transform,Vec(0,1,0)),2,10)
     end
 end
 
 function  update(dt)
-    --debugPlayer()
     playerUpdate(dt)
     planetsUpdate(dt)
     planetGravity(dt)
     playerController(dt)
     playerPhysicsUpdate(dt)
+   -- debugPlayer()
 end
 
-function playerPhysicsUpdate()
+function playerPhysicsUpdate(dt)
+
     -------------------------------------------------- Player Gravity Align --------------------------------------------------
     local min, max = GetBodyBounds(player.planetParent)
     local center = VecLerp(min,max,0.5)
@@ -131,10 +146,14 @@ function playerPhysicsUpdate()
     end
     -------------------------------------------------- Air Resistance --------------------------------------------------
 
-    player.vel = VecScale(player.vel,0.97)
+    player.vel = VecScale(player.vel,0.99)
 
     -------------------------------------------------- Gravity --------------------------------------------------
+  
+     --SetPlayerTransform(t,true)
     SetBodyVelocity(player.body,player.vel)
+
+
 end
 
 ----------------------------------------------------- Helper Functions -----------------------------------------------------
@@ -142,8 +161,7 @@ end
 function IsPlayerOnGround()
     QueryRejectBody(player.body)
     local hit, dist, normal, shape = QueryRaycast(player.pos,TransformToParentVec(player.transform,Vec(0,-1,0)),2,0,false)
-    DebugPrint(hit)
-    return hit
+    return hit,shape
 end
 
 function clamp(value, mi, ma)
@@ -156,14 +174,33 @@ function VecDist(a, b)
 	return VecLength(VecSub(a, b))
 end
 
-function strongestGrav()
-
+function updatePlayerCamera(dt)
+        -------------------------------------------------- Player Camera --------------------------------------------------
+    local pos = TransformToParentPoint(player.transform,Vec(0,0,-1))
+    local rot = QuatRotateQuat(player.rot,QuatEuler(player.pitch,0,0))
+    local t = Transform(pos,rot)
+    if player.camera then
+        SetCameraTransform(t)
+    end
+    
 end
 
-function tick()
-      playerCameraUpdate(dt)
-
-
+function tick(dt)
+    updatePlayerCamera(dt)
     --SetPlayerVelocity(VecAdd(vel,VecScale(dir,1)))
     --SetPlayerTransform(Transform(GetPlayerTransform().pos,QuatEuler(-180,0,0)),true)
+end
+
+function draw(dt)
+    local prevStr = 0
+    for i=1,#planets do
+        local planet = planets[i]
+        local dist = VecDist(planet.center,player.pos)
+        local gravConst = 1
+        local strength = dt*(gravConst*planet.mass / (dist * dist))
+        local x, y = UiWorldToPixel(planet.center)
+        if IsBodyVisible(planet.body,200) then
+            UiTooltip(strength,2,"center",{x,y},5)
+        end
+    end
 end
