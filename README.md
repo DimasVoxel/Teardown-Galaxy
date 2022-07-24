@@ -12,5 +12,5 @@
 
 ## Requirements <a name = "Requirements"></a>
 
-Copy the asset folder from the build in mods into this mod
+Copy the asset folder from the build in asset pack mod into this mod
 
