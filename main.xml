@@ -2,13 +2,30 @@
 	<script file="main.lua"/>
 	<script file="sandbox.lua"/>
 	<spawnpoint pos="1.5 76.7 0.0" rot="0 180 0"/>
-	<body tags="planet mass=1000" pos="12.2 45.6 -60.1" dynamic="false">
-		<voxbox pos="-12.2 -12.7 -13.1" size="256 256 256" brush="MOD/vox/ball.vox" object="planet" color="0.64 0.97 0.68"/>
+	<script pos="12.8 32.9 -27.8" rot="0.0 100.0 -60.0" file="MOD/script/planet.lua">
+		<body tags="planet mass=1000" pos="-0.6 12.7 0.3" dynamic="true">
+			<voxbox tags="planet" pos="-12.2 -12.7 -13.1" size="256 256 256" brush="MOD/vox/ball.vox" object="planet" color="0.64 0.97 0.68"/>
+		</body>
+	</script>
+	<script pos="-17.3 79.3 -13.2" file="MOD/script/planet.lua">
+		<body tags="planet mass=1000" pos="-0.6 12.7 0.3" dynamic="true">
+			<voxbox tags="planet" pos="-12.2 -12.7 -13.1" size="256 256 256" brush="MOD/vox/ball.vox" object="planet" color="0.97 0.93 0.64"/>
+			<vox pos="0.0 12.6 2.4" rot="-10.0 -180.0 0.0" file="MOD/assets/furniture/livingroom_oldie.vox" object="couch with blanket"/>
+			<vox pos="0.4 12.7 -2.2" rot="-10.0 0.0 0.0" file="MOD/assets/furniture/livingroom_oldie.vox" object="couch"/>
+			<vox pos="-2.2 12.5 0.1" rot="-9.9 80.1 1.7" file="MOD/assets/furniture/livingroom_oldie.vox" object="fireplace"/>
+			<vox pos="2.5 12.6 -2.2" rot="-10.0 -40.0 0.0" file="MOD/assets/furniture/livingroom_oldie.vox" object="lamp_1"/>
+			<vox pos="0.7 12.9 0.1" rot="0.0 0.0 0.0" file="MOD/assets/furniture/livingroom_oldie.vox" object="table_2"/>
+		</body>
+	</script>
+	<body tags="planet mass=1500" pos="-17.9 116.2 55.0" dynamic="false">
+		<voxbox tags="planet" pos="-10.0 -10.0 -10.0" size="200 200 200" brush="MOD" object="planet" color="0.97 0.93 0.64"/>
 	</body>
-	<body tags="planet mass=2000" pos="25.2 36.1 22.9" dynamic="false">
-		<voxbox pos="-13.0 -12.6 -12.6" size="256 256 256" brush="MOD/vox/ball.vox" object="planet" color="0.64 0.87 0.97"/>
-	</body>
-	<script pos="0.0 50.30001 10.5" file="MOD/script/player.lua">
+	<script pos="25.0 23.5 23.1" rot="0.0 -50.0 -40.0" file="MOD/script/planet.lua">
+		<body tags="planet mass=1000" pos="0.2 12.6 -0.2" dynamic="true">
+			<voxbox tags="planet" pos="-13.0 -12.6 -12.6" size="256 256 256" brush="MOD/vox/ball.vox" object="planet" color="0.64 0.87 0.97"/>
+		</body>
+	</script>
+	<script pos="0.0 103.90001 4.6" file="MOD/script/player.lua">
 		<body tags="player" pos="0.0" dynamic="true">
 			<voxbox tags="unbreakable" pos="-0.05 -0.05 -0.05" collide="true" size="1"/>
 		</body>

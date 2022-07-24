@@ -20,14 +20,15 @@ function playerInit()
 end
 
 function planetsUpdate()
-    local planetBodies = FindBodies('planet',true) 
-    for num,planetBody in pairs(planetBodies) do
+    local planetShapes = FindShapes('planet',true) 
+    for num,planetShape in pairs(planetShapes) do
         local planet = {}
-        planet.body = planetBody
-        planet.transform = GetBodyTransform(planetBody)
-        local min, max GetBodyBounds(planetBody)
-        planet.center = TransformToParentPoint(planet.transform, VecLerp(min,max,0.5))
-        planet.mass = tonumber(GetTagValue(planetBody, 'mass'))
+        planet.shape = planetShape
+        planet.body = GetShapeBody(planetShape)
+        planet.transform = GetBodyTransform(planet.body)
+        local min, max = GetShapeBounds(planet.shape)
+        planet.center = VecLerp(min,max,0.5)
+        planet.mass = tonumber(GetTagValue(planet.body, 'mass'))
         planets[num] = planet 
     end 
 end
@@ -83,33 +84,34 @@ end
 
 
 function playerController()
+    if player.camera then
+        if InputDown("w") and IsPlayerOnGround() then 
+            player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0,0,-0.2)))
+        elseif InputDown("w") and IsPlayerOnGround() == false then 
+            player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0,0,-0.05)))
+        end
 
-    if InputDown("w") and IsPlayerOnGround() then 
-        player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0,0,-0.2)))
-    elseif InputDown("w") and IsPlayerOnGround() == false then 
-        player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0,0,-0.05)))
-    end
+        if InputDown("s") and IsPlayerOnGround() then 
+            player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0,0,0.2)))
+        elseif InputDown("s") and IsPlayerOnGround() == false then
+            player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0,0,0.05)))
+        end
 
-    if InputDown("s") and IsPlayerOnGround() then 
-        player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0,0,0.2)))
-    elseif InputDown("s") and IsPlayerOnGround() == false then
-        player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0,0,0.05)))
-    end
+        if InputDown("a") and IsPlayerOnGround() then 
+            player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(-0.2,0,0)))
+        elseif InputDown("a") and IsPlayerOnGround() == false then
+            player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(-0.05,0,0)))
+        end
 
-    if InputDown("a") and IsPlayerOnGround() then 
-        player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(-0.2,0,0)))
-    elseif InputDown("a") and IsPlayerOnGround() == false then
-        player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(-0.05,0,0)))
-    end
+        if InputDown("d") and IsPlayerOnGround() then 
+            player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0.2,0,0)))
+        elseif InputDown("d") and IsPlayerOnGround() == false then
+            player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0.05,0,0)))
+        end
 
-    if InputDown("d") and IsPlayerOnGround() then 
-        player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0.2,0,0)))
-    elseif InputDown("d") and IsPlayerOnGround() == false then
-        player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0.05,0,0)))
-    end
-
-    if InputDown("space") and IsPlayerOnGround() then 
-        ConstrainVelocity(player.body,0,player.pos,TransformToParentVec(player.transform,Vec(0,1,0)),2,10)
+        if InputDown("space") and IsPlayerOnGround() then 
+            ConstrainVelocity(player.body,0,player.pos,TransformToParentVec(player.transform,Vec(0,1,0)),2,10)
+        end
     end
 end
 
@@ -135,11 +137,8 @@ function playerPhysicsUpdate(dt)
 
     ConstrainOrientation(player.body,0,player.rot,targetRot,5,100)
     -------------------------------------------------- Player Standing on Surface --------------------------------------------------
-    local x,y,z = GetQuatEuler(player.rot)
     QueryRejectBody(player.body)
-    DebugWatch('player.rot',Vec(x,y,z))
     local hit, dist, normal, shape = QueryRaycast(player.pos,TransformToParentVec(player.transform,Vec(0,-1,0)),1.8,0)
-
     if hit then 
         --ConstrainPosition(player.body,0,player.pos,TransformToParentPoint(player.transform,Vec(0,1.8-dist,0)),3,100)
         ConstrainVelocity(player.body,0,player.pos,TransformToParentVec(player.transform,Vec(0,1,0)),1.8-dist)
@@ -148,12 +147,26 @@ function playerPhysicsUpdate(dt)
 
     player.vel = VecScale(player.vel,0.99)
 
+    -------------------------------------------------- Player Planet Friction --------------------------------------------------
+--   local hit, shape, point = IsPlayerOnGround()
+--   local planetBody = GetShapeBody(shape)
+--   local bodyShapes = GetBodyShapes(planetBody)
+--   if hit and HasTag(planetBody,"planet") then 
+--       for i=1, #bodyShapes do 
+--           local shape = bodyShapes[i]
+--           if HasTag(shape,"planet") then 
+--               local planetAngular = GetBodyAngularVelocity(planetBody)
+--               local min, max = GetShapeBounds(shape)
+--               local center = VecLerp(min,max,0.5)
+--               local distance = VecDist(center,point)
+--               player.vel = VecAdd(player.vel,VecScale(planetAngular,distance))
+--           end
+--       end
+--   end
     -------------------------------------------------- Gravity --------------------------------------------------
-  
+
      --SetPlayerTransform(t,true)
     SetBodyVelocity(player.body,player.vel)
-
-
 end
 
 ----------------------------------------------------- Helper Functions -----------------------------------------------------
@@ -161,7 +174,7 @@ end
 function IsPlayerOnGround()
     QueryRejectBody(player.body)
     local hit, dist, normal, shape = QueryRaycast(player.pos,TransformToParentVec(player.transform,Vec(0,-1,0)),2,0,false)
-    return hit,shape
+    return hit,shape, VecAdd(player.pos,VecScale(TransformToParentVec(player.transform,Vec(0,-1,0)),dist))
 end
 
 function clamp(value, mi, ma)
@@ -181,6 +194,9 @@ function updatePlayerCamera(dt)
     local t = Transform(pos,rot)
     if player.camera then
         SetCameraTransform(t)
+        --SetPlayerTransform(t,true)
+    else
+        DebugLine(GetPlayerTransform().pos,player.pos)
     end
     
 end

@@ -1,7 +1,7 @@
-name = Mod name here
-author = Your name here
-description = Informative description here
-tags=
+name = Teardown Galaxy
+author = Dima's Voxel
+description = Fly between planets and enjoy your time
+tags=content,map,gameplay
 
 # If description contains [noupload] the description on Steam workshop will not be overwritten.
 # Available tags (comma-separated):
