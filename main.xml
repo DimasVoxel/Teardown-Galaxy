@@ -25,9 +25,9 @@
 			<voxbox tags="planet" pos="-13.0 -12.6 -12.6" size="256 256 256" brush="MOD/vox/ball.vox" object="planet" color="0.64 0.87 0.97"/>
 		</body>
 	</script>
-	<script pos="0.0 103.90001 4.6" file="MOD/script/player.lua">
+	<script pos="-16.0 103.90001 -7.1" file="MOD/script/player.lua">
 		<body tags="player" pos="0.0" dynamic="true">
-			<voxbox tags="unbreakable" pos="-0.05 -0.05 -0.05" collide="true" size="1"/>
+			<voxbox tags="unbreakable" pos="-0.05 0.0 -0.05" size="1"/>
 		</body>
 	</script>
 	<environment template="sunset" pos="0.0 71.0 50.4" skybox="cold_sunset.dds" skyboxtint="0.61 0.76 0.92 " skyboxbrightness="1 " skyboxrot="300 " constant="0.003 0.003 0.003 " ambient="0.7" ambientexponent="10" fogColor="1 0.9 0.6" fogParams="40 500 1 8" sunBrightness="5" sunColorTint="0.66 0.84 0.99" sunSpread="0.2" sunLength="64" sunFogScale="2" sunGlare="0.4" exposure="0 0.3" brightness="3 " wetness="0 " puddleamount="0 " puddlesize="0.5 " rain="0 " nightlight="true " ambience="outdoor/caribbean_ocean.ogg 1 " fogscale="1 " slippery="0 " waterhurt="0 " snowdir="0 -1 0 0.2 " snowamount="0 0 " wind="0 0 0 "/>
