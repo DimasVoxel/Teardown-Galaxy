@@ -18,24 +18,23 @@ end
 
 
 function gravityUpdate(dt)
-    local shapes = FindShapes("",true) 
-        for num,shape in pairs(shapes) do
-            local body = GetShapeBody(shape)
+    local bodies = FindBodies("",true) 
+    for num,body in pairs(bodies) do
+        if not HasTag(body,"nograv") and IsBodyDynamic(body) == true and not HasTag(body,"player") then
             local vel = GetBodyVelocity(body)
             vel = VecAdd(Vec(0,10*dt,0),vel)
-            if not HasTag(body,"nograv") and IsBodyDynamic(body) == true and not HasTag(body,"player") then
-                for i=1,#planets do
-                    local planet = planets[i]
-                    local min, max = GetShapeBounds(shape)
-                    local center = VecLerp(min,max,0.5)
-                    local mass = GetBodyMass(body)
-                    local dir = VecNormalize(VecSub(planet.center,center))
-                    local dist = VecDist(planet.center,center)
-                    local coef = 7200/mass
-                    local gravConst = 0.00015
-                    local strength = dt*(gravConst*planet.mass*((mass*coef)-100) / (dist * dist))
-                    vel = VecAdd(vel,VecScale(dir,strength))
-                end         
+            for i=1,#planets do
+                local planet = planets[i]
+                local t = GetBodyTransform(body)
+                local com = TransformToParentPoint(t,GetBodyCenterOfMass(body))
+                local mass = GetBodyMass(body)
+                local dir = VecNormalize(VecSub(planet.center,com))
+                local dist = VecDist(planet.center,com)
+                local coef = 7200/mass
+                local gravConst = 0.00015
+                local strength = dt*(gravConst*planet.mass*((mass*coef)-100) / (dist * dist))
+                vel = VecAdd(vel,VecScale(dir,strength))
+            end         
             SetBodyVelocity(body,vel)
         end
     end
