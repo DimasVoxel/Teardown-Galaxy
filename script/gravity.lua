@@ -47,10 +47,6 @@ end
 function update(dt)
     planetsUpdate(dt)
     gravityUpdate(dt)
-
-    if InputDown("h") then 
-        DebugPrint("")
-    end
 end
 
 function VecDist(a, b)
