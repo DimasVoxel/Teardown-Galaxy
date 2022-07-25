@@ -29,9 +29,11 @@ function gravityUpdate(dt)
                     local mass = GetBodyMass(body)
                     local dir = VecNormalize(VecSub(planet.center,t.pos))
                     local dist = VecDist(planet.center,t.pos)
-                    local gravConst = 0.0005
-                    
-                    local strength = dt*(gravConst*planet.mass*mass / (dist * dist))
+
+                    local coef = 7200/mass
+
+                    local gravConst = 0.00015
+                    local strength = dt*(gravConst*planet.mass*((mass*coef)-100) / (dist * dist))
                     vel = VecAdd(vel,VecScale(dir,strength))
                 end         
             SetBodyVelocity(body,vel)
