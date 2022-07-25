@@ -1,0 +1,8 @@
+<prefab version="1.1.0">
+	<group name="instance=MOD/vox/tool/hook.xml" pos="0.0 0.0 0.0" rot="0.0 0.0 0.0">
+		<body tags='interact="grab" unbreakable hookBody' pos="-0.8 0.0 0.0" rot="0 90 0" dynamic="true">
+			<vox tags="hook" pos="0.35 -0.45 0.05" density="10" file="MOD/vox/tool/grapple.vox" object="hook"/>
+		</body>
+	</group>
+</prefab>
+

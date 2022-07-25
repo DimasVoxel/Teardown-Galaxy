@@ -3,6 +3,21 @@
 function init()
     planets = {}
     playerInit()
+    toolInit()
+end
+
+function toolInit()
+	RegisterTool("grapple_loaded", "Grappling Hook", "MOD/vox/tool/grapple.vox",1)
+    SetBool("game.tool.grapple_loaded.enabled", true)
+    RegisterTool("grapple_shot", "Grappling Hook", "MOD/vox/tool/grappleBody.vox",1)
+    SetBool("game.tool.grapple_shot.enabled", false)
+    
+    tool = {}
+    tool.hookBody = 0 
+    tool.hookTransform = Transform()
+    tool.hookEngaged = false
+    tool.hookPoint = Vec()
+    tool.hookBody = 0
 
 end
 
@@ -30,7 +45,7 @@ function playerInit()
     for i=1,#shapes do 
         SetShapeCollisionFilter(shapes[i], 2,0)
     end
-    player.camera = "camera" 
+    player.camera = "player" 
 end
 
 function planetsUpdate()
@@ -56,7 +71,7 @@ function playerUpdate(dt)
     player.HeadTransform = Transform(TransformToParentPoint(player.transform,(Vec(0,1.8,0))),player.rot)
     player.HeadPos = player.HeadTransform.pos
     player.HeadRot = player.HeadTransform.rot
-    DebugLine(player.pos,player.HeadPos,1,1,1,1)
+    --DebugLine(player.pos,player.HeadPos,1,1,1,1)
     player.center = TransformToParentPoint(player.transform, GetBodyCenterOfMass(player.body))
     local vel = GetBodyVelocity(player.body)
     player.vel = VecAdd(vel,Vec(0, 10*dt, 0))-- kind of counteract gravity
@@ -131,13 +146,80 @@ function playerController()
     end
 end
 
+function playerTool()
+    if GetString("game.player.tool") == "grapple_loaded" or GetString("game.player.tool") == "grapple_shot" then 
+        ToolTransform = Transform()
+        ToolTransform.pos = Vec(0.725,-0.425, -1)
+        ToolTransform.rot = QuatEuler(10,89, 14)
+        SetToolTransform(ToolTransform,1.2)
+        --show points compared to tool
+        local LocalTr = Transform(Vec(0.175,0.25,0))
+        local PointOnTool = TransformToParentPoint(GetBodyTransform(GetToolBody()),LocalTr.pos)
+        local ToolOrigin = TransformToParentPoint(GetBodyTransform(GetToolBody()),Vec(0,0,0))
+        --PointOnTool = TransformToParentTransform(GetCameraTransform(),PointOnTool)
+        if InputDown("usetool") and GetBool("game.tool.grapple_loaded.enabled") == true then
+            SetBool("game.tool.grapple_loaded.enabled", false)
+            SetBool("game.tool.grapple_shot.enabled", true)
+            SetString("game.player.tool", "grapple_shot")
+
+  
+            local rot = QuatRotateQuat(player.rot,QuatEuler(player.pitch,0,0))
+            local t = Transform(PointOnTool,rot)
+            local vox = Spawn("MOD/vox/tool/hook.xml",t)
+
+            SetBodyAngularVelocity(vox[1],Vec())
+            SetBodyVelocity(vox[1],VecScale(TransformToParentVec(t,Vec(0,0,-1)),30))
+            tool.hookBody = FindBody('hookBody',true)
+        end
+
+        if GetBool("game.tool.grapple_shot.enabled") == true then 
+            tool.hookTransform = GetBodyTransform(tool.hookBody)
+            DrawLine(PointOnTool,tool.hookTransform.pos,0,0,0,1)
+
+            QueryRequire("physical large")
+            QueryRejectBody(tool.hookBody)
+            local hit, point, normal , shape = QueryClosestPoint(tool.hookTransform.pos,1)
+
+            if hit and tool.hookEngaged == false and VecDist(player.pos,tool.hookTransform.pos) > 5 then 
+                tool.hookEngaged = true
+                tool.hookedBody = GetShapeBody(shape)
+                local bt = GetBodyTransform(tool.hookedBody)
+                tool.hookLocalTransform = TransformToLocalTransform(bt,tool.hookTransform)
+            end
+
+            if tool.hookEngaged == true then 
+                ConstrainPosition(tool.hookBody,tool.hookedBody,tool.hookTransform.pos,TransformToParentTransform(GetBodyTransform(tool.hookedBody),tool.hookLocalTransform).pos)
+                if InputDown("usetool") and VecDist(player.pos,tool.hookTransform.pos) > 5 then 
+                    --ConstrainPosition(player.body,tool.hookBody,player.pos,TransformToParentTransform(GetBodyTransform(tool.hookedBody),tool.hookLocalTransform).pos,10,5)
+                    ConstrainVelocity(player.body,0,player.center,VecSub(tool.hookTransform.pos,player.pos),10,0,10)
+                end
+            end
+            if VecDist(player.pos,tool.hookTransform.pos) > 10 and not tool.hookEngaged then 
+                if InputDown("usetool") then 
+                    ConstrainVelocity(tool.hookBody,0,tool.hookTransform.pos,VecSub(player.pos,tool.hookTransform.pos),10,0)
+                end
+            end
+        end
+
+        if GetPlayerInteractBody() == tool.hookBody and InputDown("interact") then 
+            SetBool("game.tool.grapple_loaded.enabled", true)
+            SetBool("game.tool.grapple_shot.enabled", false)
+            SetString("game.player.tool", "grapple_loaded")
+            Delete(tool.hookBody)
+            toolInit() --reset tool
+        end
+    end
+end
+
+
 function  update(dt)
+
     playerUpdate(dt)
     planetsUpdate(dt)
     planetGravity(dt)
     playerController(dt)
     playerPhysicsUpdate(dt)
-    debugPlayer()
+    --debugPlayer()
 end
 
 
@@ -165,7 +247,7 @@ function playerPhysicsUpdate(dt)
     local hit, dist, normal, shape = QueryRaycast(player.HeadPos,TransformToParentVec(player.HeadTransform,Vec(0,-1,0)),1.8,0)
     if hit then 
         --ConstrainPosition(player.body,0,player.HeadPos,TransformToParentPoint(player.HeadTransform,Vec(0,1.8-dist,0)),3,100)
-        ConstrainVelocity(player.body,0,player.HeadPos,TransformToParentVec(player.HeadTransform,Vec(0,1,0)),1.8-dist)
+        ConstrainVelocity(player.body,0,player.HeadPos,TransformToParentVec(player.HeadTransform,Vec(0,1,0)),1.8-dist,0)
     end
     -------------------------------------------------- Air Resistance --------------------------------------------------
 
@@ -183,6 +265,7 @@ function playerPhysicsUpdate(dt)
         if l>MaxAcc then
             VelDiff = VecScale(VecNormalize(VelDiff),MaxAcc)
             player.vel = VecAdd(player.vel,VelDiff)
+            
         else
             player.vel = FinalVel
         end
@@ -225,6 +308,7 @@ function VecDist(a, b)
 	return VecLength(VecSub(a, b))
 end
 
+
 function updatePlayerCamera(dt)
         -------------------------------------------------- Player Camera --------------------------------------------------
 
@@ -248,8 +332,8 @@ end
 
 function tick(dt)
     updatePlayerCamera(dt)
-    --SetPlayerVelocity(VecAdd(vel,VecScale(dir,1)))
-    --SetPlayerTransform(Transform(GetPlayerTransform().pos,QuatEuler(-180,0,0)),true)
+    playerTool(dt)
+
     if InputPressed("h") then 
         if player.camera == "camera" then 
             player.camera = "player"
