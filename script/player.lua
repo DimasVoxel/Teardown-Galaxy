@@ -46,6 +46,7 @@ function playerInit()
         SetShapeCollisionFilter(shapes[i], 2,0)
     end
     player.camera = "player" 
+    player.vehicleBody = GetVehicleBody(GetPlayerVehicle())
 end
 
 function planetsUpdate()
@@ -82,6 +83,7 @@ function playerUpdate(dt)
 
     local hit, shape, point = IsPlayerOnGround()
     player.contactPoint = point
+    player.vehicleBody = GetVehicleBody(GetPlayerVehicle())
 end
 
 function planetGravity(dt)
@@ -94,7 +96,7 @@ function planetGravity(dt)
         local strength = dt*(gravConst*planet.mass / (dist * dist))
         player.vel = VecAdd(player.vel,VecScale(dir,strength))
         if prevStr < strength then  
-            player.planetParent = planet.body
+            player.planetParent = planet.body       
             prevStr = strength
         end
     end
@@ -162,7 +164,6 @@ function playerTool()
             SetBool("game.tool.grapple_shot.enabled", true)
             SetString("game.player.tool", "grapple_shot")
 
-  
             local rot = QuatRotateQuat(player.rot,QuatEuler(player.pitch,0,0))
             local t = Transform(PointOnTool,rot)
             local vox = Spawn("MOD/vox/tool/hook.xml",t)
@@ -233,7 +234,15 @@ function playerPhysicsUpdate(dt)
     SetBodyAngularVelocity(player.body,(GetBodyAngularVelocity(planetBody)))
 
     -------------------------------------------------- Player Gravity Align --------------------------------------------------
-    local min, max = GetBodyBounds(player.planetParent)
+    local shapes = GetBodyShapes(player.planetParent)
+    local planetShape = 0 
+    for i=1, #shapes do 
+        if HasTag(shapes[i],"planet") then 
+            planetShape = shapes[i]
+            break
+        end
+    end
+    local min, max = GetShapeBounds(planetShape)
     local center = VecLerp(min,max,0.5)
 	local xAxis = VecNormalize(VecSub(player.HeadPos,center))
 	local zAxis = VecNormalize(VecSub(center,TransformToParentPoint(player.HeadTransform,Vec(0,0,-1))))
@@ -265,11 +274,9 @@ function playerPhysicsUpdate(dt)
         if l>MaxAcc then
             VelDiff = VecScale(VecNormalize(VelDiff),MaxAcc)
             player.vel = VecAdd(player.vel,VelDiff)
-            
         else
             player.vel = FinalVel
         end
-        
         --Add to velocity here for moving from inputs
    end
     -------------------------------------------------- Gravity --------------------------------------------------
@@ -327,7 +334,15 @@ function updatePlayerCamera(dt)
         
         SetPlayerTransform(t, true) -- Doesnt work. Well it does, but it has issues
     end
-    
+
+ --This needs way more work 
+  if player.vehicleBody ~= 0 then
+ 
+      local pos = TransformToParentPoint(player.HeadTransform,Vec(0,1,3))
+      local rot = QuatRotateQuat(player.rot,QuatEuler(player.pitch,0,0))
+      local t = Transform(pos,rot)
+      SetCameraTransform(t)
+  end
 end
 
 function tick(dt)
@@ -354,7 +369,7 @@ function draw(dt)
         local strength = dt*(gravConst*planet.mass / (dist * dist))
         local x, y = UiWorldToPixel(planet.center)
         if IsBodyVisible(planet.body,200) then
-            UiTooltip(strength,2,"center",{x,y},5)
+            --UiTooltip(strength,2,"center",{x,y},5)
         end
     end
 end
