@@ -18,7 +18,7 @@ function toolInit()
     tool.hookEngaged = false
     tool.hookPoint = Vec()
     tool.hookBody = 0
-
+    tool.flashTimer = 5
 end
 
 function playerInit()
@@ -78,7 +78,7 @@ function playerUpdate(dt)
     player.vel = VecAdd(vel,Vec(0, 10*dt, 0))-- kind of counteract gravity
     local cameray = InputValue('cameray')*-40 
     player.pitch = player.pitch + cameray
-    player.pitch = clamp(player.pitch, -80, 80)
+    player.pitch = clamp(player.pitch, -90, 90)
     -- clamp pitch between 80 and -80
 
     local hit, shape, point = IsPlayerOnGround()
@@ -148,7 +148,7 @@ function playerController()
     end
 end
 
-function playerTool()
+function playerTool(dt)
     if GetString("game.player.tool") == "grapple_loaded" or GetString("game.player.tool") == "grapple_shot" then 
         ToolTransform = Transform()
         ToolTransform.pos = Vec(0.725,-0.425, -1)
@@ -179,7 +179,7 @@ function playerTool()
 
             QueryRequire("physical large")
             QueryRejectBody(tool.hookBody)
-            local hit, point, normal , shape = QueryClosestPoint(tool.hookTransform.pos,1)
+            local hit, point, normal , shape = QueryClosestPoint(tool.hookTransform.pos,1.5)
 
             if hit and tool.hookEngaged == false and VecDist(player.pos,tool.hookTransform.pos) > 5 then 
                 tool.hookEngaged = true
@@ -188,7 +188,12 @@ function playerTool()
                 tool.hookLocalTransform = TransformToLocalTransform(bt,tool.hookTransform)
             end
 
-            if tool.hookEngaged == true then 
+            if tool.hookEngaged == true then
+                if tool.flashTimer > 0 then 
+                    tool.flashTimer = tool.flashTimer - dt
+                    DrawOutlineBlink(tool.hookedBody,1,2,1,1,1,1)
+                end
+
                 ConstrainPosition(tool.hookBody,tool.hookedBody,tool.hookTransform.pos,TransformToParentTransform(GetBodyTransform(tool.hookedBody),tool.hookLocalTransform).pos)
                 if InputDown("usetool") and VecDist(player.pos,tool.hookTransform.pos) > 5 then 
                     --ConstrainPosition(player.body,tool.hookBody,player.pos,TransformToParentTransform(GetBodyTransform(tool.hookedBody),tool.hookLocalTransform).pos,10,5)
@@ -209,6 +214,27 @@ function playerTool()
             Delete(tool.hookBody)
             toolInit() --reset tool
         end
+    end
+end
+
+function DrawOutlineBlink(entity, speed, time, red, green, blue, alphamulti)
+    speed = speed or 1
+    time = GetTime()
+    red = red or 1
+    green = green or 1
+    blue = blue or 1
+    alphamulti = alphamulti or 1
+
+    local t = (time * speed) % 2
+    local alpha = logistic(t, 1, -15, 0.4) * logistic(t, 1, 15, 1.4)
+
+    local type = GetEntityType(entity)
+    if type == 'body' then
+        DrawBodyHighlight(entity, alpha * alphamulti)
+        DrawBodyOutline(entity, red, green, blue, alpha * alphamulti)
+    elseif type == 'shape' then
+        DrawBodyHighlight(entity, alpha * alphamulti)
+        DrawShapeOutline(entity, red, green, blue, alpha * alphamulti)
     end
 end
 
@@ -256,13 +282,22 @@ function playerPhysicsUpdate(dt)
     local hit, dist, normal, shape = QueryRaycast(player.HeadPos,TransformToParentVec(player.HeadTransform,Vec(0,-1,0)),1.8,0)
     if hit then 
         --ConstrainPosition(player.body,0,player.HeadPos,TransformToParentPoint(player.HeadTransform,Vec(0,1.8-dist,0)),3,100)
-        ConstrainVelocity(player.body,0,player.HeadPos,TransformToParentVec(player.HeadTransform,Vec(0,1,0)),1.8-dist,0)
+        ConstrainVelocity(player.body,0,player.HeadPos,TransformToParentVec(player.HeadTransform,Vec(0,1,0)),1.8*2-dist*2,0)
     end
+--  QueryRejectBody(player.body)
+--  local hit, point, normal, shape = QueryClosestPoint(TransformToParentPoint(player.transform, Vec(0,1,0)), 0.5)
+--  if hit then
+--      DebugCross(point,1,1,1,1)
+--     -- ConstrainVelocity(player.body,0,TransformToParentPoint(player.transform, Vec(0,1,0)),VecSub(TransformToParentPoint(player.transform, Vec(0,1,0)),point),10*0.5-VecDist(player.pos,point)*10) 
+--      DebugLine(TransformToParentPoint(player.transform, Vec(0,1,0)),VecAdd(TransformToParentPoint(player.transform, Vec(0,1,0)),VecSub(TransformToParentPoint(player.transform, Vec(0,1,0)),point)),1,1,1,1)
+--      ConstrainPosition(player.body,0,TransformToParentPoint(player.transform, Vec(0,0,0)),VecAdd(TransformToParentPoint(player.transform, Vec(0,0,0)),VecSub(TransformToParentPoint(player.transform, Vec(0,0,0)),point)),10)
+--  end
+    
     -------------------------------------------------- Air Resistance --------------------------------------------------
 
     player.vel = VecScale(player.vel,0.99)
 
-    -------------------------------------------------- Player Planet Friction --------------------------------------------------
+    -------------------------------------------------- Plaer Planet Friction --------------------------------------------------
    local hit, shape, point = IsPlayerOnGround()
    local planetBody = GetShapeBody(shape)
    if hit and HasTag(planetBody,"planet") then
