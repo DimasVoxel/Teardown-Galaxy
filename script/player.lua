@@ -29,9 +29,9 @@ function playerInit()
     player.pos = player.transform.pos
     player.rot = player.transform.rot
     
-    player.HeadTransform = Transform(TransformToParentPoint(player.transform,(Vec(0,1.8,0))),player.rot)
-    player.HeadPos = player.HeadTransform.pos
-    player.HeadRot = player.HeadTransform.rot
+    player.headTransform = Transform(TransformToParentPoint(player.transform,(Vec(0,1.8,0))),player.rot)
+    player.headPos = player.headTransform.pos
+    player.headRot = player.headTransform.rot
 
     player.pitch = 0
     local min, max GetBodyBounds(player.body)
@@ -69,10 +69,10 @@ function playerUpdate(dt)
     player.transform = GetBodyTransform(player.body)
     player.pos = player.transform.pos
     player.rot = player.transform.rot
-    player.HeadTransform = Transform(TransformToParentPoint(player.transform,(Vec(0,1.8,0))),player.rot)
-    player.HeadPos = player.HeadTransform.pos
-    player.HeadRot = player.HeadTransform.rot
-    --DebugLine(player.pos,player.HeadPos,1,1,1,1)
+    player.headTransform = Transform(TransformToParentPoint(player.transform,(Vec(0,1.8,0))),player.rot)
+    player.headPos = player.headTransform.pos
+    player.headRot = player.headTransform.rot
+    --DebugLine(player.pos,player.headPos,1,1,1,1)
     player.center = TransformToParentPoint(player.transform, GetBodyCenterOfMass(player.body))
     local vel = GetBodyVelocity(player.body)
     player.vel = VecAdd(vel,Vec(0, 10*dt, 0))-- kind of counteract gravity
@@ -111,8 +111,8 @@ function debugPlayer(dt)
 
  
     DebugCross(player.contactPoint,1,1,1,1)
-    DebugLine(player.HeadPos,TransformToParentPoint(player.HeadTransform,Vec(0,-1,0)))
-    DebugLine(player.HeadPos,TransformToParentPoint(player.HeadTransform,Vec(0,0,-1)),0,1,1,1)
+    DebugLine(player.headPos,TransformToParentPoint(player.headTransform,Vec(0,-1,0)))
+    DebugLine(player.headPos,TransformToParentPoint(player.headTransform,Vec(0,0,-1)),0,1,1,1)
 end
 
 
@@ -270,8 +270,8 @@ function playerPhysicsUpdate(dt)
     end
     local min, max = GetShapeBounds(planetShape)
     local center = VecLerp(min,max,0.5)
-	local xAxis = VecNormalize(VecSub(player.HeadPos,center))
-	local zAxis = VecNormalize(VecSub(center,TransformToParentPoint(player.HeadTransform,Vec(0,0,-1))))
+	local xAxis = VecNormalize(VecSub(player.headPos,center))
+	local zAxis = VecNormalize(VecSub(center,TransformToParentPoint(player.headTransform,Vec(0,0,-1))))
     local down = QuatRotateQuat(QuatAlignXZ(xAxis, zAxis),QuatEuler(0,0,-90))
     local camerax = InputValue("camerax")*-60
     local targetRot = QuatRotateQuat(down,QuatEuler(0,camerax,0))
@@ -279,10 +279,10 @@ function playerPhysicsUpdate(dt)
     ConstrainOrientation(player.body,0,player.rot,targetRot,5,100)
     -------------------------------------------------- Player Standing on Surface --------------------------------------------------
     QueryRejectBody(player.body)
-    local hit, dist, normal, shape = QueryRaycast(player.HeadPos,TransformToParentVec(player.HeadTransform,Vec(0,-1,0)),1.8,0)
+    local hit, dist, normal, shape = QueryRaycast(player.headPos,TransformToParentVec(player.headTransform,Vec(0,-1,0)),1.8,0)
     if hit then 
-        --ConstrainPosition(player.body,0,player.HeadPos,TransformToParentPoint(player.HeadTransform,Vec(0,1.8-dist,0)),3,100)
-        ConstrainVelocity(player.body,0,player.HeadPos,TransformToParentVec(player.HeadTransform,Vec(0,1,0)),1.8*2-dist*2,0)
+        --ConstrainPosition(player.body,0,player.headPos,TransformToParentPoint(player.headTransform,Vec(0,1.8-dist,0)),3,100)
+        ConstrainVelocity(player.body,0,player.headPos,TransformToParentVec(player.headTransform,Vec(0,1,0)),1.8*2-dist*2,0)
     end
 --  QueryRejectBody(player.body)
 --  local hit, point, normal, shape = QueryClosestPoint(TransformToParentPoint(player.transform, Vec(0,1,0)), 0.5)
@@ -309,6 +309,7 @@ function playerPhysicsUpdate(dt)
         if l>MaxAcc then
             VelDiff = VecScale(VecNormalize(VelDiff),MaxAcc)
             player.vel = VecAdd(player.vel,VelDiff)
+
         else
             player.vel = FinalVel
         end
@@ -336,8 +337,8 @@ end
 
 function IsPlayerOnGround()
     QueryRejectBody(player.body)
-    local hit, dist, normal, shape = QueryRaycast(player.HeadPos,TransformToParentVec(player.HeadTransform,Vec(0,-1,0)),2,0,false)
-    return hit,shape, VecAdd(player.HeadPos,VecScale(TransformToParentVec(player.HeadTransform,Vec(0,-1,0)),dist))
+    local hit, dist, normal, shape = QueryRaycast(player.headPos,TransformToParentVec(player.headTransform,Vec(0,-1,0)),2,0,false)
+    return hit,shape, VecAdd(player.headPos,VecScale(TransformToParentVec(player.headTransform,Vec(0,-1,0)),dist))
 end
 
 function clamp(value, mi, ma)
@@ -355,15 +356,15 @@ function updatePlayerCamera(dt)
         -------------------------------------------------- Player Camera --------------------------------------------------
 
     if player.camera == "camera" then
-        local pos = TransformToParentPoint(player.HeadTransform,Vec(0,0,0))
+        local pos = TransformToParentPoint(player.headTransform,Vec(0,0,0))
         local rot = QuatRotateQuat(player.rot,QuatEuler(player.pitch,0,0))
         local t = Transform(pos,rot)
 
         SetCameraTransform(t)
     elseif player.camera == "independent" then
-        DebugLine(GetPlayerTransform().pos,player.HeadPos)
+        DebugLine(GetPlayerTransform().pos,player.headPos)
     elseif player.camera == "player" then    
-        local pos = VecAdd(TransformToParentPoint(player.HeadTransform,Vec(0,0,0)),Vec(0,-1.8,0))
+        local pos = VecAdd(TransformToParentPoint(player.headTransform,Vec(0,0,0)),Vec(0,-1.8,0))
         local rot = QuatRotateQuat(player.rot,QuatEuler(player.pitch,0,0))
         local t = Transform(pos,rot)
         
@@ -373,7 +374,7 @@ function updatePlayerCamera(dt)
  --This needs way more work 
   if player.vehicleBody ~= 0 then
  
-      local pos = TransformToParentPoint(player.HeadTransform,Vec(0,1,3))
+      local pos = TransformToParentPoint(player.headTransform,Vec(0,1,3))
       local rot = QuatRotateQuat(player.rot,QuatEuler(player.pitch,0,0))
       local t = Transform(pos,rot)
       SetCameraTransform(t)
