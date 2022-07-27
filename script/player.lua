@@ -38,7 +38,7 @@ function playerInit()
     local min, max GetBodyBounds(player.body)
     player.center = TransformToParentPoint(player.transform, VecLerp(min,max,0.5))
     
-    player.planetParent = 0 
+    player.parent = 0 
     player.camera = true
     local hit, shape, point = IsPlayerOnGround()
     player.onGroud = hit
@@ -95,13 +95,15 @@ function playerUpdate(dt)
     player.vel = VecAdd(vel,Vec(0, 10*dt, 0))-- kind of counteract gravity
     local cameray = InputValue('cameray')*-40 
     player.pitch = player.pitch + cameray
-    player.pitch = clamp(player.pitch, -90, 90)
-    -- clamp pitch between 80 and -80
+    player.pitch = Clamp(player.pitch, -90, 90)
+    -- Clamp pitch between 80 and -80
 
     local hit, shape, point = IsPlayerOnGround()
     player.onGround = hit
     player.contactPoint = point
     player.vehicleBody = GetVehicleBody(GetPlayerVehicle())
+    player.inGravity = "planet"
+    player.strongestGravity = 0
 end
 
 function planetGravity(dt)
@@ -113,9 +115,65 @@ function planetGravity(dt)
         local gravConst = 1
         local strength = dt*(gravConst*planet.mass / (dist * dist))
         player.vel = VecAdd(player.vel,VecScale(dir,strength))
-        if prevStr < strength then  
-            player.planetParent = planet.body       
-            prevStr = strength
+        if player.strongestGravity < strength then  
+            player.parent = planet.body
+            player.inGravity = "planet"
+            player.strongestGravity = strength
+        end
+    end
+end
+
+function attractorGravity(dt)
+    for i=1,#gravityFields do
+        local field = gravityFields[i] 
+        local pCenter = VecLerp(player.pos,player.headPos,0.5)
+        local closestPoint = GetTriggerClosestPoint(field.trigger, pCenter)
+        local dist = Clamp(VecDist(closestPoint,pCenter),12,10000000000)
+        local dir = Vec()
+        local gravConst = 1
+        local strength = 0
+
+        if field.type == "global" then
+            if IsPointInTrigger(field.trigger, pCenter) then 
+                dir = VecCopy(field.pullDir)
+            else
+                dir = VecNormalize(VecSub(closestPoint,pCenter))
+            end
+            strength = dt*(gravConst*field.strength / (dist * dist))
+            if field.exclusive == true then 
+                player.vel = VecAdd(Vec(0,10*dt,0),GetBodyVelocity(player.body))
+                player.vel = VecAdd(player.vel,VecScale(dir,strength))
+                player.parent = field
+                player.inGravity = "attractor"
+                player.strongestGravity = strength
+                break
+            end
+            if player.strongestGravity < strength then  
+                player.parent = field
+                player.inGravity = "attractor"
+                player.strongestGravity = strength
+            end
+
+            player.vel = VecAdd(player.vel,VecScale(dir,strength))
+        elseif field.type == "local" then
+            if IsPointInTrigger(field.trigger, pCenter) then
+                dir = VecCopy(field.pullDir)
+                strength = dt*(gravConst*field.strength / (dist * dist))
+                if field.exclusive == true then 
+                    player.vel = VecAdd(Vec(0,10*dt,0),GetBodyVelocity(player.body))
+                    player.vel = VecAdd(player.vel,VecScale(field.pullDir,strength))
+                    player.parent = field
+                    player.inGravity = "attractor"
+                    player.strongestGravity = strength
+                    break
+                end 
+                if player.strongestGravity < strength then 
+                    player.parent = field
+                    player.inGravity = "attractor"
+                    player.strongestGravity = strength
+                end
+                player.vel = VecAdd(player.vel,VecScale(field.pullDir,strength))
+            end
         end
     end
 end
@@ -213,7 +271,7 @@ function playerTool(dt)
                 end
 
                 ConstrainPosition(tool.hookBody,tool.hookedBody,tool.hookTransform.pos,TransformToParentTransform(GetBodyTransform(tool.hookedBody),tool.hookLocalTransform).pos)
-                if InputDown("usetool") and VecDist(player.pos,tool.hookTransform.pos) > 5 then 
+                if InputDown("usetool") and VecDist(player.pos,tool.hookTransform.pos) > 1 then 
                     --ConstrainPosition(player.body,tool.hookBody,player.pos,TransformToParentTransform(GetBodyTransform(tool.hookedBody),tool.hookLocalTransform).pos,10,5)
                     ConstrainVelocity(player.body,0,player.center,VecSub(tool.hookTransform.pos,player.pos),10,0,10)
                 end
@@ -262,6 +320,8 @@ function  update(dt)
     playerUpdate(dt)
     planetsUpdate(dt)
     planetGravity(dt)
+    attractorsUpdate()
+    attractorGravity(dt)
     playerController(dt)
     playerPhysicsUpdate(dt)
     --debugPlayer()
@@ -278,23 +338,28 @@ function playerPhysicsUpdate(dt)
     SetBodyAngularVelocity(player.body,(GetBodyAngularVelocity(planetBody)))
 
     -------------------------------------------------- Player Gravity Align --------------------------------------------------
-    local shapes = GetBodyShapes(player.planetParent)
-    local planetShape = 0 
-    for i=1, #shapes do 
-        if HasTag(shapes[i],"planet") then 
-            planetShape = shapes[i]
-            break
+   local alignWith = Vec()
+    if player.inGravity == "planet" then
+        local shapes = GetBodyShapes(player.parent)
+        local planetShape = 0 
+        for i=1, #shapes do 
+            if HasTag(shapes[i],"planet") then 
+                planetShape = shapes[i]
+                break
+            end
         end
+        local min, max = GetShapeBounds(planetShape)
+        alignWith = VecLerp(min,max,0.5)
+    elseif player.inGravity == "attractor" then
+        alignWith = TransformToParentPoint(player.parent.transform,VecAdd(TransformToLocalPoint(player.parent.transform,player.pos),Vec(0,-1,0)))
     end
-    local min, max = GetShapeBounds(planetShape)
-    local center = VecLerp(min,max,0.5)
-	local xAxis = VecNormalize(VecSub(player.headPos,center))
-	local zAxis = VecNormalize(VecSub(center,TransformToParentPoint(player.headTransform,Vec(0,0,-1))))
+    local xAxis = VecNormalize(VecSub(player.headPos,alignWith))
+    local zAxis = VecNormalize(VecSub(alignWith,TransformToParentPoint(player.headTransform,Vec(0,0,-1))))
     local down = QuatRotateQuat(QuatAlignXZ(xAxis, zAxis),QuatEuler(0,0,-90))
     local camerax = InputValue("camerax")*-60
     local targetRot = QuatRotateQuat(down,QuatEuler(0,camerax,0))
-
     ConstrainOrientation(player.body,0,player.rot,targetRot,5,100)
+
     -------------------------------------------------- Player Standing on Surface --------------------------------------------------
     QueryRejectBody(player.body)
     local hit, dist, normal, shape = QueryRaycast(player.headPos,TransformToParentVec(player.headTransform,Vec(0,-1,0)),1.8,0)
@@ -359,7 +424,7 @@ function IsPlayerOnGround()
     return hit,shape, VecAdd(player.headPos,VecScale(TransformToParentVec(player.headTransform,Vec(0,-1,0)),dist))
 end
 
-function clamp(value, mi, ma)
+function Clamp(value, mi, ma)
 	if value < mi then value = mi end
 	if value > ma then value = ma end
 	return value
@@ -386,17 +451,24 @@ function updatePlayerCamera(dt)
         local rot = QuatRotateQuat(player.rot,QuatEuler(player.pitch,0,0))
         local t = Transform(pos,rot)
         
-        SetPlayerTransform(t, true) -- Doesnt work. Well it does, but it has issues
+        SetPlayerTransform(t, true) 
     end
 
- --This needs way more work 
-  if player.vehicleBody ~= 0 then
- 
-      local pos = TransformToParentPoint(player.headTransform,Vec(0,1,3))
-      local rot = QuatRotateQuat(player.rot,QuatEuler(player.pitch,0,0))
-      local t = Transform(pos,rot)
-      SetCameraTransform(t)
-  end
+--This needs way more work 
+ if player.vehicleBody ~= 0 then
+    scroll = Clamp(scroll - InputValue("mousewheel"), 0, 100)
+    local tr = GetVehicleTransform(GetPlayerVehicle())
+    if not cameraPos then
+        cameraPos = TransformToParentPoint(tr, Vec(0,1.5,scroll))
+    else
+        cameraPos = VecLerp(cameraPos, TransformToParentPoint(tr, Vec(0,1.5,scroll)), dt*20)
+    end
+
+     local pos = TransformToParentPoint(player.headTransform,Vec(0,1,3))
+     local rot = QuatRotateQuat(player.rot,QuatEuler(player.pitch,0,0))
+     local t = Transform(cameraPos,rot)
+     SetCameraTransform(t)
+ end
 end
 
 function tick(dt)
@@ -415,15 +487,25 @@ function tick(dt)
 end
 
 function draw(dt)
-    local prevStr = 0
-    for i=1,#planets do
-        local planet = planets[i]
-        local dist = VecDist(planet.center,player.pos)
-        local gravConst = 1
-        local strength = dt*(gravConst*planet.mass / (dist * dist))
-        local x, y = UiWorldToPixel(planet.center)
-        if IsBodyVisible(planet.body,200) then
-            --UiTooltip(strength,2,"center",{x,y},5)
-        end
-    end
+   -- local prevStr = 0
+   -- for i=1,#planets do
+   --     local planet = planets[i]
+   --     local dist = VecDist(planet.center,player.pos)
+   --     local gravConst = 1
+   --     local strength = dt*(gravConst*planet.mass / (dist * dist))
+   --     local x, y = UiWorldToPixel(planet.center)
+   --     if IsBodyVisible(planet.body,200) then
+   --         UiTooltip(strength,2,"center",{x,y},5)
+   --     end
+   -- end
+   -- for i=1,#gravityFields do
+   --     local field = gravityFields[i] 
+   --     local pCenter = VecLerp(player.pos,player.headPos,0.5)
+   --     local closestPoint = GetTriggerClosestPoint(field.trigger, pCenter)
+   --     local dist = Clamp(VecDist(closestPoint,pCenter),12,10000000000)
+   --     local gravConst = 1
+   --     strength = dt*(gravConst*field.strength / (dist * dist))
+   --     local x, y = UiWorldToPixel(closestPoint)
+   --     UiTooltip(strength,2,"center",{x,y},5)
+   -- end
 end
