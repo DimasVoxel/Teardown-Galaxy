@@ -91,6 +91,9 @@ function gravityUpdate(dt)
                     end
                 end
             end
+            if mass > 1000 then 
+                vel = VecScale(vel,0.999)
+            end
             SetBodyVelocity(body,vel)
         end
     end
