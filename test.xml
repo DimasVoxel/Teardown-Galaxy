@@ -4,19 +4,9 @@
 	<spawnpoint pos="1.5 76.7 0.0" rot="0 180 0"/>
 	<body tags="planet mass=1000" pos="-21.8 92.0 -12.9" rot="0.0 0.0 0.0" dynamic="false">
 		<voxbox tags="planet" pos="-12.2 -12.7 -13.1" size="256 256 256" brush="MOD/vox/ball.vox" object="planet" color="0.97 0.93 0.64"/>
-		<vox pos="0.0 12.6 2.4" rot="-10.0 -180.0 0.0" file="MOD/assets/furniture/livingroom_oldie.vox" object="couch with blanket"/>
-		<vox pos="0.4 12.7 -2.2" rot="-10.0 0.0 0.0" file="MOD/assets/furniture/livingroom_oldie.vox" object="couch"/>
-		<vox pos="-2.2 12.5 0.1" rot="-9.9 80.1 1.7" file="MOD/assets/furniture/livingroom_oldie.vox" object="fireplace"/>
-		<vox pos="2.5 12.6 -2.2" rot="-10.0 -40.0 0.0" file="MOD/assets/furniture/livingroom_oldie.vox" object="lamp_1"/>
-		<vox pos="0.7 12.9 0.1" rot="0.0 0.0 0.0" file="MOD/assets/furniture/livingroom_oldie.vox" object="table_2"/>
 	</body>
 	<body tags="planet mass=1000" pos="-21.5 92.0 56.48" rot="0.0 0.0 0.0" dynamic="false">
 		<voxbox tags="planet" pos="-12.2 -12.7 -13.1" size="256 256 256" brush="MOD/vox/ball.vox" object="planet" color="0.97 0.93 0.64"/>
-		<vox pos="0.0 12.6 2.4" rot="-10.0 -180.0 0.0" file="MOD/assets/furniture/livingroom_oldie.vox" object="couch with blanket"/>
-		<vox pos="0.4 12.7 -2.2" rot="-10.0 0.0 0.0" file="MOD/assets/furniture/livingroom_oldie.vox" object="couch"/>
-		<vox pos="-2.2 12.5 0.1" rot="-9.9 80.1 1.7" file="MOD/assets/furniture/livingroom_oldie.vox" object="fireplace"/>
-		<vox pos="2.5 12.6 -2.2" rot="-10.0 -40.0 0.0" file="MOD/assets/furniture/livingroom_oldie.vox" object="lamp_1"/>
-		<vox pos="0.7 12.9 0.1" rot="0.0 0.0 0.0" file="MOD/assets/furniture/livingroom_oldie.vox" object="table_2"/>
 	</body>
 	<script pos="0.0 83.40001 0.4" file="MOD/script/player.lua">
 		<body tags="player" pos="0.0" dynamic="true">
@@ -27,9 +17,16 @@
 	<postprocessing pos="0.0 0.1 0.0" colorbalance="0.8 0.9 0.8" brightness="5" gamma="1.1" bloom="0.4"/>
 	<script file="MOD/script/gravity.lua"/>
 	<script pos="-17.1 80.8 21.1" file="MOD/script/triggerTransform.lua">
+		<body tags="triggerparent" pos="0.0 1.4 -0.6" rot="180.0 180.0 0.0" dynamic="false">
+			<voxbox pos="7.9 -0.1 -33.2" rot="0.0 -90.0 0.0" size="709 30 74">
+				<trigger tags="gravityfield mass=1000 type=local exclusive" pos="34.6 2.8 3.6" type="box" size="68.6 3.0 7.4"/>
+			</voxbox>
+		</body>
+	</script>
+	<script pos="-25.7 103.4 21.1" rot="180.0 180.0 0.0" file="MOD/script/triggerTransform.lua">
 		<body tags="triggerparent" pos="0.0 2.1 -0.6" rot="180.0 180.0 0.0" dynamic="false">
 			<voxbox pos="7.9 -0.0 -35.4" rot="0.0 -90.0 0.0" size="686 30 74">
-				<trigger tags="gravityfield mass=1000 type=local" pos="34.6 0.0 3.6" type="box" size="68.6 3.0 7.4"/>
+				<trigger tags="gravityfield mass=1000 type=local exclusive" pos="34.6 2.8 3.6" type="box" size="68.6 3.0 7.4"/>
 			</voxbox>
 		</body>
 	</script>
