@@ -2,6 +2,7 @@
 
 function init()
     planets = {}
+    gravityFields = {}
     playerInit()
     toolInit()
 end
@@ -36,9 +37,11 @@ function playerInit()
     player.pitch = 0
     local min, max GetBodyBounds(player.body)
     player.center = TransformToParentPoint(player.transform, VecLerp(min,max,0.5))
+    
     player.planetParent = 0 
     player.camera = true
     local hit, shape, point = IsPlayerOnGround()
+    player.onGroud = hit
     player.contactPoint = point
 
     local shapes = GetBodyShapes(player.body)
@@ -63,6 +66,20 @@ function planetsUpdate()
     end 
 end
 
+function attractorsUpdate()
+    local triggers = FindTriggers("gravityfield",true)
+    for num,trigger in pairs(triggers) do 
+        local field = {}
+        field.trigger = trigger
+        field.transform = GetTriggerTransform(trigger)
+        field.strength = GetTagValue(trigger, "mass")
+        field.type = GetTagValue(trigger, "type") -- can be either global gravity(like planet but long) or local only apply if in trigegr
+        field.exclusive = HasTag(trigger, "exclusive") -- if exclusive then ignore all other gravity fields
+        field.pullDir = TransformToParentVec(field.transform, Vec(0,-1,0))
+        gravityFields[num] = field
+    end
+end
+
 function playerUpdate(dt)
 
     -------------------------------------------------- Player State --------------------------------------------------
@@ -82,6 +99,7 @@ function playerUpdate(dt)
     -- clamp pitch between 80 and -80
 
     local hit, shape, point = IsPlayerOnGround()
+    player.onGround = hit
     player.contactPoint = point
     player.vehicleBody = GetVehicleBody(GetPlayerVehicle())
 end
@@ -118,31 +136,31 @@ end
 
 function playerController()
     if player.camera ~= "independent" then
-        if InputDown("w") and IsPlayerOnGround() then 
+        if InputDown("w") and player.onGround then 
             player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0,0,-0.25)))
-        elseif InputDown("w") and IsPlayerOnGround() == false then 
+        elseif InputDown("w") and player.onGround == false then 
             player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0,0,-0.05)))
         end
 
-        if InputDown("s") and IsPlayerOnGround() then 
+        if InputDown("s") and player.onGround then 
             player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0,0,0.25)))
-        elseif InputDown("s") and IsPlayerOnGround() == false then
+        elseif InputDown("s") and player.onGround == false then
             player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0,0,0.05)))
         end
 
-        if InputDown("a") and IsPlayerOnGround() then 
+        if InputDown("a") and player.onGround then 
             player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(-0.25,0,0)))
-        elseif InputDown("a") and IsPlayerOnGround() == false then
+        elseif InputDown("a") and player.onGround == false then
             player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(-0.05,0,0)))
         end
 
-        if InputDown("d") and IsPlayerOnGround() then 
+        if InputDown("d") and player.onGround then 
             player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0.25,0,0)))
-        elseif InputDown("d") and IsPlayerOnGround() == false then
+        elseif InputDown("d") and player.onGround == false then
             player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0.05,0,0)))
         end
 
-        if InputDown("space") and IsPlayerOnGround() then 
+        if InputDown("space") and player.onGround then 
             ConstrainVelocity(player.body,0,player.center,TransformToParentVec(player.transform,Vec(0,1,0)),10)
         end
     end
