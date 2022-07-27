@@ -1,6 +1,12 @@
 #include helper.lua
 
+
 function init()
+
+    scroll = 10 
+    vehicleCamera = Quat()
+    vehicleCamYaw = 0
+
     planets = {}
     gravityFields = {}
     playerInit()
@@ -356,10 +362,10 @@ function playerPhysicsUpdate(dt)
     local xAxis = VecNormalize(VecSub(player.headPos,alignWith))
     local zAxis = VecNormalize(VecSub(alignWith,TransformToParentPoint(player.headTransform,Vec(0,0,-1))))
     local down = QuatRotateQuat(QuatAlignXZ(xAxis, zAxis),QuatEuler(0,0,-90))
-    local camerax = InputValue("camerax")*-60
+    local camerax = InputValue("camerax")*-100
     local targetRot = QuatRotateQuat(down,QuatEuler(0,camerax,0))
     ConstrainOrientation(player.body,0,player.rot,targetRot,5,100)
-
+    
     -------------------------------------------------- Player Standing on Surface --------------------------------------------------
     QueryRejectBody(player.body)
     local hit, dist, normal, shape = QueryRaycast(player.headPos,TransformToParentVec(player.headTransform,Vec(0,-1,0)),1.8,0)
@@ -367,8 +373,8 @@ function playerPhysicsUpdate(dt)
         --ConstrainPosition(player.body,0,player.headPos,TransformToParentPoint(player.headTransform,Vec(0,1.8-dist,0)),3,100)
         ConstrainVelocity(player.body,0,player.headPos,TransformToParentVec(player.headTransform,Vec(0,1,0)),1.8*2-dist*2,0)
     end
---  QueryRejectBody(player.body)
---  local hit, point, normal, shape = QueryClosestPoint(TransformToParentPoint(player.transform, Vec(0,1,0)), 0.5)
+
+
 --  if hit then
 --      DebugCross(point,1,1,1,1)
 --     -- ConstrainVelocity(player.body,0,TransformToParentPoint(player.transform, Vec(0,1,0)),VecSub(TransformToParentPoint(player.transform, Vec(0,1,0)),point),10*0.5-VecDist(player.pos,point)*10) 
@@ -406,6 +412,37 @@ function playerPhysicsUpdate(dt)
         player.vel = 0
         ConstrainPosition(player.body,0,player.pos,player.pos)
     end
+
+    -------------------------------------------------- Collision --------------------------------------------------
+
+    QueryRejectBody(player.body)
+    local hit1, point1, normal1 = QueryClosestPoint(TransformToParentPoint(player.transform, Vec(0.1,0.6,-0.1)), 0.3)
+    local hit2, point2, normal2 = QueryClosestPoint(TransformToParentPoint(player.transform, Vec(-0.1,0.6,-0.1)), 0.3)
+    local hit3, point3, normal3 = QueryClosestPoint(TransformToParentPoint(player.transform, Vec(-0.1,0.6,0.1)), 0.3)
+    local hit4, point4, normal4 = QueryClosestPoint(TransformToParentPoint(player.transform, Vec(0.1,0.6,0.1)), 0.3)
+    if hit1 and hit2 then 
+        local normal = VecNormalize(VecAdd(normal1,normal2))
+        DebugCross(point1,1,1,1,1)
+        DebugCross(point2,1,1,1,1)
+        player.vel = VecLerp(VecSub(player.vel, VecScale(normal, VecDot(normal, player.vel))),player.vel,0.78)
+    elseif hit2 and hit3 then
+        DebugCross(point2,1,1,1,1)
+        DebugCross(point3,1,1,1,1)
+        local normal = VecNormalize(VecAdd(normal2,normal3))
+        player.vel = VecLerp(VecSub(player.vel, VecScale(normal, VecDot(normal, player.vel))),player.vel,0.78)
+    elseif hit3 and hit4 then 
+        DebugCross(point3,1,1,1,1)
+        DebugCross(point4,1,1,1,1)
+        local normal = VecNormalize(VecAdd(normal3,normal4))
+        player.vel = VecLerp(VecSub(player.vel, VecScale(normal, VecDot(normal, player.vel))),player.vel,0.78)
+    elseif hit4 and hit1 then 
+        DebugCross(point4,1,1,1,1)
+        DebugCross(point1,1,1,1,1)
+        local normal = VecNormalize(VecAdd(normal4,normal1))
+        player.vel = VecLerp(VecSub(player.vel, VecScale(normal, VecDot(normal, player.vel))),player.vel,0.78)
+    end
+
+    -------------------------------------------------- PlayerMove --------------------------------------------------
 
     if GetPlayerVehicle() ~= 0 then
         ConstrainPosition(player.body,0,player.pos, GetBodyTransform((GetVehicleBody(GetPlayerVehicle()))).pos)
@@ -454,21 +491,41 @@ function updatePlayerCamera(dt)
         SetPlayerTransform(t, true) 
     end
 
---This needs way more work 
- if player.vehicleBody ~= 0 then
-    scroll = Clamp(scroll - InputValue("mousewheel"), 0, 100)
-    local tr = GetVehicleTransform(GetPlayerVehicle())
-    if not cameraPos then
-        cameraPos = TransformToParentPoint(tr, Vec(0,1.5,scroll))
-    else
-        cameraPos = VecLerp(cameraPos, TransformToParentPoint(tr, Vec(0,1.5,scroll)), dt*20)
-    end
-
-     local pos = TransformToParentPoint(player.headTransform,Vec(0,1,3))
-     local rot = QuatRotateQuat(player.rot,QuatEuler(player.pitch,0,0))
-     local t = Transform(cameraPos,rot)
-     SetCameraTransform(t)
- end
+--This needs way more work someone that understands quats shuold take a look 
+ --   if player.vehicleBody ~= 0 then
+ --       local tr = GetVehicleTransform(GetPlayerVehicle())
+ --       local alignWith = Vec()
+ --       if player.inGravity == "planet" then
+ --           local shapes = GetBodyShapes(player.parent)
+ --           local planetShape = 0 
+ --           for i=1, #shapes do 
+ --               if HasTag(shapes[i],"planet") then 
+ --                   planetShape = shapes[i]
+ --                   break
+ --               end
+ --           end
+ --           local min, max = GetShapeBounds(planetShape)
+ --           alignWith = VecLerp(min,max,0.5)
+ --       elseif player.inGravity == "attractor" then
+ --           alignWith = TransformToParentPoint(player.parent.transform,VecAdd(TransformToLocalPoint(player.parent.transform,tr.pos),Vec(0,-1,0)))
+ --       end
+--
+ --       local xAxis = VecNormalize(VecSub(tr.pos,alignWith))
+ --       local zAxis = VecNormalize(VecSub(alignWith,TransformToParentPoint(tr,Vec(0,0,-1))))
+ --       local down = QuatRotateQuat(QuatAlignXZ(xAxis, zAxis),QuatEuler(0,0,-90))
+ --       vehicleCamYaw = vehicleCamYaw + InputValue("cameray")*60
+ --       local targetRot = QuatRotateQuat(down,QuatEuler(0,vehicleCamYaw,0))
+--
+ --       scroll = Clamp(scroll - InputValue("mousewheel"), 0, 100)
+--
+ --       if not cameraPos then
+ --           cameraPos = TransformToParentPoint(tr, Vec(0,1.5,scroll))
+ --       else
+ --           cameraPos = VecLerp(cameraPos, TransformToParentPoint(tr, Vec(0,1.5,scroll)), dt*20)
+ --       end
+--
+ --       SetCameraTransform(Transform(cameraPos,rot))
+ --   end
 end
 
 function tick(dt)
