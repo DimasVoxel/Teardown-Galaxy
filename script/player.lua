@@ -207,7 +207,6 @@ function debugPlayer(dt)
     DebugWatch("player.rot.x",Vec(x,y,z))
 
  
-    DebugCross(player.contactPoint,1,1,1,1)
     DebugLine(player.headPos,TransformToParentPoint(player.headTransform,Vec(0,-1,0)))
     DebugLine(player.headPos,TransformToParentPoint(player.headTransform,Vec(0,0,-1)),0,1,1,1)
 end
@@ -455,22 +454,22 @@ end
     local hit4, point4, normal4 = QueryClosestPoint(TransformToParentPoint(player.transform, Vec(0.1,0.6,0.1)), 0.3)
     if hit1 and hit2 then 
         local normal = VecNormalize(VecAdd(normal1,normal2))
-        DebugCross(point1,1,1,1,1)
-        DebugCross(point2,1,1,1,1)
+        --DebugCross(point1,1,1,1,1)
+        --DebugCross(point2,1,1,1,1)
         player.vel = VecLerp(VecSub(player.vel, VecScale(normal, VecDot(normal, player.vel))),player.vel,0.78)
     elseif hit2 and hit3 then
-        DebugCross(point2,1,1,1,1)
-        DebugCross(point3,1,1,1,1)
+        --DebugCross(point2,1,1,1,1)
+        --DebugCross(point3,1,1,1,1)
         local normal = VecNormalize(VecAdd(normal2,normal3))
         player.vel = VecLerp(VecSub(player.vel, VecScale(normal, VecDot(normal, player.vel))),player.vel,0.78)
     elseif hit3 and hit4 then 
-        DebugCross(point3,1,1,1,1)
-        DebugCross(point4,1,1,1,1)
+        --DebugCross(point3,1,1,1,1)
+        --DebugCross(point4,1,1,1,1)
         local normal = VecNormalize(VecAdd(normal3,normal4))
         player.vel = VecLerp(VecSub(player.vel, VecScale(normal, VecDot(normal, player.vel))),player.vel,0.78)
     elseif hit4 and hit1 then 
-        DebugCross(point4,1,1,1,1)
-        DebugCross(point1,1,1,1,1)
+        --DebugCross(point4,1,1,1,1)
+        --DebugCross(point1,1,1,1,1)
         local normal = VecNormalize(VecAdd(normal4,normal1))
         player.vel = VecLerp(VecSub(player.vel, VecScale(normal, VecDot(normal, player.vel))),player.vel,0.78)
     end
@@ -537,12 +536,8 @@ function updatePlayerCamera(dt)
     cam.rot = QuatRotateQuat(camY, camX)
     camDist = rebound(camDist - mouse.scroll, 0, 20)
     x, y, z = GetQuatEuler(cam.rot)
-    cam.pos = VecAdd(TransformToParentPoint(GetVehicleTransform(GetPlayerVehicle()), Vec(0, 1.8, 0)),
-                    VecScale(Vec(math.sin(math.pi * y / 180), -math.sin(math.pi * x / 180), math.cos(math.pi * y / 180)), camDist))
-    SetCameraTransform(cam)
-    DebugWatch("cam",cam)
-    DebugWatch("vehicle",GetVehicleTransform(GetPlayerVehicle()))
-    DebugWatch("transform",TransformToParentTransform(GetVehicleTransform(vehicleHandle), cam))
+    cam.pos = VecAdd(Vec(0, 2.8, 0),VecScale(Vec(math.sin(math.pi * y / 180), -math.sin(math.pi * x / 180), math.cos(math.pi * y / 180)), camDist))
+    SetCameraTransform(TransformToParentTransform(GetVehicleTransform(GetPlayerVehicle()), cam))
     end
 end
 cam = Transform()
