@@ -28,6 +28,20 @@ function toolInit()
     tool.flashTimer = 5
 end
 
+-- Super jank player contact point generator
+function playerContactPoint()
+    local hit, dist, normal, shape = QueryRaycast(TransformToParentPoint(player.transform,Vec(0.2,0.4,-0.2)),TransformToParentVec(player.headTransform,Vec(0,-1,0)),0.4,0,false)
+    point1 = VecAdd(TransformToParentPoint(player.transform,Vec(0.2,0.4,-0.2)),VecScale(TransformToParentVec(player.headTransform,Vec(0,-1,0)),dist))
+    local hit, dist, normal, shape = QueryRaycast(TransformToParentPoint(player.transform,Vec(-0.2,0.4,-0.2)),TransformToParentVec(player.headTransform,Vec(0,-1,0)),0.4,0,false)
+    point2 = VecAdd(TransformToParentPoint(player.transform,Vec(-0.2,0.4,-0.2)),VecScale(TransformToParentVec(player.headTransform,Vec(0,-1,0)),dist))
+    local hit, dist, normal, shape = QueryRaycast(TransformToParentPoint(player.transform,Vec(-0.2,0.4,0.2)),TransformToParentVec(player.headTransform,Vec(0,-1,0)),0.4,0,false)
+    point3 = VecAdd(TransformToParentPoint(player.transform,Vec(-0.2,0.4,0.2)),VecScale(TransformToParentVec(player.headTransform,Vec(0,-1,0)),dist))
+    local hit, dist, normal, shape = QueryRaycast(TransformToParentPoint(player.transform,Vec(0.2,0.4,0.2)),TransformToParentVec(player.headTransform,Vec(0,-1,0)),0.4,0,false)
+    point4 = VecAdd(TransformToParentPoint(player.transform,Vec(0.2,0.4,0.2)),VecScale(TransformToParentVec(player.headTransform,Vec(0,-1,0)),dist))
+
+    return VecLerp(VecLerp(point1,point2,0.5),VecLerp(point3,point4,0.5),0.5)
+end
+
 function playerInit()
     player = {}
     player.vel = 0
@@ -49,10 +63,11 @@ function playerInit()
     local hit, shape, point = IsPlayerOnGround()
     player.onGroud = hit
     player.contactPoint = point
+    player.onPlanetTransform = -1
 
     local shapes = GetBodyShapes(player.body)
     for i=1,#shapes do 
-        SetShapeCollisionFilter(shapes[i], 2,0)
+        Delete(shapes[i])
     end
     player.camera = "player" 
     player.vehicleBody = GetVehicleBody(GetPlayerVehicle())
@@ -106,7 +121,7 @@ function playerUpdate(dt)
 
     local hit, shape, point = IsPlayerOnGround()
     player.onGround = hit
-    player.contactPoint = point
+    player.contactPoint = playerContactPoint()
     player.vehicleBody = GetVehicleBody(GetPlayerVehicle())
     player.inGravity = "planet"
     player.strongestGravity = 0
@@ -368,10 +383,11 @@ function playerPhysicsUpdate(dt)
     
     -------------------------------------------------- Player Standing on Surface --------------------------------------------------
     QueryRejectBody(player.body)
-    local hit, dist, normal, shape = QueryRaycast(player.headPos,TransformToParentVec(player.headTransform,Vec(0,-1,0)),1.8,0)
+    local hit, dist, normal, shape = QueryRaycast(TransformToParentPoint(player.transform,Vec(0,0.4,0)),TransformToParentVec(player.headTransform,Vec(0,-1,0)),0.5,0,false)
+
     if hit then 
-        --ConstrainPosition(player.body,0,player.headPos,TransformToParentPoint(player.headTransform,Vec(0,1.8-dist,0)),3,100)
-        ConstrainVelocity(player.body,0,player.headPos,TransformToParentVec(player.headTransform,Vec(0,1,0)),1.8*2-dist*2,0)
+        local t = Transform(VecLerp(player.contactPoint,GetBodyTransform(player.body).pos),player.rot)
+        SetBodyTransform(player.body,t)
     end
 
 
@@ -387,23 +403,40 @@ function playerPhysicsUpdate(dt)
     player.vel = VecScale(player.vel,0.99)
 
     -------------------------------------------------- Plaer Planet Friction --------------------------------------------------
-   local hit, shape, point = IsPlayerOnGround()
-   local planetBody = GetShapeBody(shape)
-   if hit and HasTag(planetBody,"planet") then
-        local FinalVel = GetBodyVelocityAtPos(planetBody,point)
-        local PlayerVel = player.vel
-        local MaxAcc = 5*dt
-        local VelDiff = VecSub(FinalVel,PlayerVel)
-        local l = VecLength(VelDiff)
-        if l>MaxAcc then
-            VelDiff = VecScale(VecNormalize(VelDiff),MaxAcc)
-            player.vel = VecAdd(player.vel,VelDiff)
+--  local hit, shape, point = IsPlayerOnGround()
+--  local planetBody = GetShapeBody(shape)
+--  local bt = GetBodyTransform(planetBody)
+--  if hit and HasTag(planetBody,"planet") then
+--       local FinalVel = GetBodyVelocityAtPos(planetBody,point)
+--       local PlayerVel = player.vel
+--       local MaxAcc = 5*dt
+--       local VelDiff = VecSub(FinalVel,PlayerVel)
+--       local l = VecLength(VelDiff)
+--       if l>MaxAcc and player.onGroud and player.onPlanetTransform ~= -1 then
+--           SetBodyTransform(player.body,Transform(TransformToParentTransform(bt,player.onPlanetTransform).pos,player.rot),true)
+--       else
+--           player.onPlanetTransform = TransformToLocalTransform(bt,player.contactPoint)
+--       end
+--       --Add to velocity here for moving from inputs
+--  end
 
-        else
-            player.vel = FinalVel
-        end
-        --Add to velocity here for moving from inputs
-   end
+local hit, shape, point = IsPlayerOnGround()
+local planetBody = GetShapeBody(shape)
+if hit and HasTag(planetBody,"planet") then
+     local FinalVel = GetBodyVelocityAtPos(planetBody,point)
+     local PlayerVel = player.vel
+     local MaxAcc = 5*dt
+     local VelDiff = VecSub(FinalVel,PlayerVel)
+     local l = VecLength(VelDiff)
+     if l>MaxAcc then
+         VelDiff = VecScale(VecNormalize(VelDiff),MaxAcc)
+         player.vel = VecAdd(player.vel,VelDiff)
+
+     else
+         player.vel = FinalVel
+     end
+     --Add to velocity here for moving from inputs
+end
     -------------------------------------------------- Gravity --------------------------------------------------
 
      --SetPlayerTransform(t,true)
@@ -457,8 +490,8 @@ end
 
 function IsPlayerOnGround()
     QueryRejectBody(player.body)
-    local hit, dist, normal, shape = QueryRaycast(player.headPos,TransformToParentVec(player.headTransform,Vec(0,-1,0)),2,0,false)
-    return hit,shape, VecAdd(player.headPos,VecScale(TransformToParentVec(player.headTransform,Vec(0,-1,0)),dist))
+    local hit, dist, normal, shape = QueryRaycast(TransformToParentPoint(player.transform,Vec(0,0.4,0)),TransformToParentVec(player.headTransform,Vec(0,-1,0)),0.5,0,false)
+    return hit,shape, VecAdd(TransformToParentPoint(player.transform,Vec(0,0.4,0)),VecScale(TransformToParentVec(player.headTransform,Vec(0,-1,0)),dist))
 end
 
 function Clamp(value, mi, ma)
@@ -492,41 +525,28 @@ function updatePlayerCamera(dt)
     end
 
 --This needs way more work someone that understands quats shuold take a look 
- --   if player.vehicleBody ~= 0 then
- --       local tr = GetVehicleTransform(GetPlayerVehicle())
- --       local alignWith = Vec()
- --       if player.inGravity == "planet" then
- --           local shapes = GetBodyShapes(player.parent)
- --           local planetShape = 0 
- --           for i=1, #shapes do 
- --               if HasTag(shapes[i],"planet") then 
- --                   planetShape = shapes[i]
- --                   break
- --               end
- --           end
- --           local min, max = GetShapeBounds(planetShape)
- --           alignWith = VecLerp(min,max,0.5)
- --       elseif player.inGravity == "attractor" then
- --           alignWith = TransformToParentPoint(player.parent.transform,VecAdd(TransformToLocalPoint(player.parent.transform,tr.pos),Vec(0,-1,0)))
- --       end
---
- --       local xAxis = VecNormalize(VecSub(tr.pos,alignWith))
- --       local zAxis = VecNormalize(VecSub(alignWith,TransformToParentPoint(tr,Vec(0,0,-1))))
- --       local down = QuatRotateQuat(QuatAlignXZ(xAxis, zAxis),QuatEuler(0,0,-90))
- --       vehicleCamYaw = vehicleCamYaw + InputValue("cameray")*60
- --       local targetRot = QuatRotateQuat(down,QuatEuler(0,vehicleCamYaw,0))
---
- --       scroll = Clamp(scroll - InputValue("mousewheel"), 0, 100)
---
- --       if not cameraPos then
- --           cameraPos = TransformToParentPoint(tr, Vec(0,1.5,scroll))
- --       else
- --           cameraPos = VecLerp(cameraPos, TransformToParentPoint(tr, Vec(0,1.5,scroll)), dt*20)
- --       end
---
- --       SetCameraTransform(Transform(cameraPos,rot))
- --   end
+    if player.vehicleBody ~= 0 then
+    local mouse = {
+        dx = InputValue("camerax"),
+        dy = InputValue("cameray"),
+        scroll = InputValue("mousewheel")
+    }
+    local x, y, z = GetQuatEuler(cam.rot)
+    local camX = QuatRotateQuat(QuatEuler(x, 0, 0), QuatEuler(-mouse.dy * 15, 0, 0))
+    local camY = QuatRotateQuat(QuatEuler(0, y, 0), QuatEuler(0, -mouse.dx * 15, 0))
+    cam.rot = QuatRotateQuat(camY, camX)
+    camDist = rebound(camDist - mouse.scroll, 0, 20)
+    x, y, z = GetQuatEuler(cam.rot)
+    cam.pos = VecAdd(TransformToParentPoint(GetVehicleTransform(GetPlayerVehicle()), Vec(0, 1.8, 0)),
+                    VecScale(Vec(math.sin(math.pi * y / 180), -math.sin(math.pi * x / 180), math.cos(math.pi * y / 180)), camDist))
+    SetCameraTransform(cam)
+    DebugWatch("cam",cam)
+    DebugWatch("vehicle",GetVehicleTransform(GetPlayerVehicle()))
+    DebugWatch("transform",TransformToParentTransform(GetVehicleTransform(vehicleHandle), cam))
+    end
 end
+cam = Transform()
+camDist = 5
 
 function tick(dt)
     updatePlayerCamera(dt)
@@ -543,6 +563,9 @@ function tick(dt)
     end
 end
 
+function rebound(value, min, max)
+    return math.max(min, math.min(max, value))
+end
 function draw(dt)
    -- local prevStr = 0
    -- for i=1,#planets do
