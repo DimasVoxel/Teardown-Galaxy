@@ -1,34 +1,43 @@
 <scene version="1.1.0" shadowVolume="200 200 200">
-	<script file="main.lua"/>
-	<script file="sandbox.lua"/>
-	<spawnpoint pos="1.5 76.7 0.0" rot="0 180 0"/>
-	<body tags="planet mass=1000" pos="-21.8 92.0 -12.9" rot="0.0 0.0 0.0" dynamic="false">
+	<script pos="5.9 0.0 0.0" rot="-10.0 0.0 0.0" file="main.lua"/>
+	<script pos="5.9 0.0 0.0" rot="-10.0 0.0 0.0" file="sandbox.lua"/>
+	<spawnpoint pos="7.4 75.53476 -13.31882" rot="10.0 -180.0 0.0"/>
+	<body tags="planet mass=1000" pos="-15.9 88.36227 -28.67965" rot="-10.0 0.0 0.0" dynamic="false">
 		<voxbox tags="planet" pos="-12.2 -12.7 -13.1" size="256 256 256" brush="MOD/vox/ball.vox" object="planet" color="0.97 0.93 0.64"/>
 	</body>
-	<body tags="planet mass=1000" pos="-21.5 92.0 56.48" rot="0.0 0.0 0.0" dynamic="false">
+	<body tags="planet mass=1000" pos="-15.6 100.40997 39.64632" rot="-10.0 0.0 0.0" dynamic="false">
 		<voxbox tags="planet" pos="-12.2 -12.7 -13.1" size="256 256 256" brush="MOD/vox/ball.vox" object="planet" color="0.97 0.93 0.64"/>
 	</body>
-	<script pos="0.0 83.40001 0.4" file="MOD/script/player.lua">
+	<script pos="-15.9 113.19263 38.42812" rot="-10.0 0.0 0.0" file="MOD/script/player.lua">
 		<body tags="player" pos="0.0" dynamic="true">
-			<voxbox tags="unbreakable" pos="-0.05 0.0 -0.05" size="6 6 6"/>
+			<voxbox tags="unbreakable" pos="-0.05 0.0 -0.05" size="1 1 1"/>
 		</body>
 	</script>
-	<environment template="sunset" pos="0.0 71.0 50.4" skybox="cold_sunset.dds" skyboxtint="0.61 0.76 0.92 " skyboxbrightness="1 " skyboxrot="300 " constant="0.003 0.003 0.003 " ambient="0.7" ambientexponent="10" fogColor="1 0.9 0.6" fogParams="40 500 1 8" sunBrightness="5" sunColorTint="0.66 0.84 0.99" sunSpread="0.2" sunLength="64" sunFogScale="2" sunGlare="0.4" exposure="0 0.3" brightness="3 " wetness="0 " puddleamount="0 " puddlesize="0.5 " rain="0 " nightlight="true " ambience="outdoor/caribbean_ocean.ogg 1 " fogscale="1 " slippery="0 " waterhurt="0 " snowdir="0 -1 0 0.2 " snowamount="0 0 " wind="0 0 0 "/>
-	<postprocessing pos="0.0 0.1 0.0" colorbalance="0.8 0.9 0.8" brightness="5" gamma="1.1" bloom="0.4"/>
-	<script file="MOD/script/gravity.lua"/>
-	<script pos="-17.1 80.8 21.1" file="MOD/script/triggerTransform.lua">
+	<environment template="sunset" pos="5.9 78.67323 37.30529" rot="-10.0 0.0 0.0" skybox="cold_sunset.dds" skyboxtint="0.61 0.76 0.92 " skyboxbrightness="1 " skyboxrot="300 " constant="0.003 0.003 0.003 " ambient="0.7" ambientexponent="10" fogColor="1 0.9 0.6" fogParams="40 500 1 8" sunBrightness="5" sunColorTint="0.66 0.84 0.99" sunSpread="0.2" sunLength="64" sunFogScale="2" sunGlare="0.4" exposure="0 0.3" brightness="3 " wetness="0 " puddleamount="0 " puddlesize="0.5 " rain="0 " nightlight="true " ambience="outdoor/caribbean_ocean.ogg 1 " fogscale="1 " slippery="0 " waterhurt="0 " snowdir="0 -1 0 0.2 " snowamount="0 0 " wind="0 0 0 "/>
+	<postprocessing pos="5.9 0.09848 -0.01736" rot="-10.0 0.0 0.0" colorbalance="0.8 0.9 0.8" brightness="5" gamma="1.1" bloom="0.4"/>
+	<script pos="5.9 0.0 0.0" rot="-10.0 0.0 0.0" file="MOD/script/gravity.lua"/>
+	<script pos="-11.2 83.23646 6.74867" rot="-10.0 0.0 0.0" file="MOD/script/triggerTransform.lua">
 		<body tags="triggerparent" pos="0.0 1.4 -0.6" rot="180.0 180.0 0.0" dynamic="false">
 			<voxbox pos="7.9 -0.1 -33.2" rot="0.0 -90.0 0.0" size="709 30 74">
 				<trigger tags="gravityfield mass=1000 type=local exclusive" pos="34.6 2.8 3.6" type="box" size="68.6 3.0 7.4"/>
 			</voxbox>
 		</body>
 	</script>
-	<script pos="-25.7 103.4 21.1" rot="180.0 180.0 0.0" file="MOD/script/triggerTransform.lua">
+	<script pos="-19.8 111.52328 4.19797" rot="180.0 180.0 0.0" file="MOD/script/triggerTransform.lua">
 		<body tags="triggerparent" pos="0.0 2.1 -0.6" rot="180.0 180.0 0.0" dynamic="false">
-			<voxbox pos="7.9 -0.0 -35.4" rot="0.0 -90.0 0.0" size="686 30 74">
-				<trigger tags="gravityfield mass=1000 type=local exclusive" pos="34.6 2.8 3.6" type="box" size="68.6 3.0 7.4"/>
+			<voxbox pos="7.9 0.0001 -6.1" rot="0.0 -90.0 0.0" size="393 30 74">
+				<trigger tags="gravityfield mass=1000 type=local exclusive" pos="17.7 2.8 3.6" type="box" size="39.3 3.0 7.4"/>
 			</voxbox>
 		</body>
 	</script>
+	<group pos="-9.4 110.00001 -17.8" rot="180.0 -20.0 0.0">
+		<script pos="0.2 0.7 -0.7" rot="0" file="MOD/script/triggerTransform.lua">
+			<body tags="triggerparent" pos="3.7 0.0 -11.4" rot="180.0 180.0 0.0" dynamic="false">
+				<voxbox pos="7.9 0.0001 -6.1" rot="0.0 -90.0 0.0" size="393 30 74">
+					<trigger tags="gravityfield mass=1000 type=local exclusive" pos="19.6 2.79996 3.6" type="box" size="39.3 3.0 7.4"/>
+				</voxbox>
+			</body>
+		</script>
+	</group>
 </scene>
 
