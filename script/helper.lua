@@ -71,9 +71,6 @@ function dist(a, b)
 	return math.abs(a - b)
 end
 
-function VecDot(a, b)
-	return a[1] * b[1] + a[2] * b[2] + a[3] * b[3]
-end
 
 -- Challenge by @TallTim and @1ssnl to make the smallest rounding function
 function Round(n,d)x=1/d return math.floor(n*x+.5)/x end
