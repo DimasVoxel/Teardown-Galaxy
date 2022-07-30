@@ -2,10 +2,10 @@
 	<script pos="5.9 0.0 0.0" rot="-10.0 0.0 0.0" file="main.lua"/>
 	<script pos="5.9 0.0 0.0" rot="-10.0 0.0 0.0" file="sandbox.lua"/>
 	<spawnpoint pos="7.4 75.53476 -13.31882" rot="10.0 -180.0 0.0"/>
-	<body tags="planet mass=1000" pos="-18.5 81.66227 -24.57965" rot="-10.0 0.0 0.0" dynamic="false">
+	<body tags="planet mass=3000" pos="-18.5 81.662 -24.58" rot="-10.0 0.0 0.0" dynamic="false">
 		<voxbox tags="planet" pos="-12.2 -12.7 -13.1" size="256 256 256" brush="MOD/vox/ball.vox" object="planet" color="0.97 0.93 0.64"/>
 	</body>
-	<body tags="planet mass=1000" pos="-15.6 100.40997 39.64632" rot="-10.0 0.0 0.0" dynamic="false">
+	<body tags="planet mass=3000" pos="-15.6 100.41 39.646" rot="-10.0 0.0 0.0" dynamic="false">
 		<voxbox tags="planet" pos="-12.2 -12.7 -13.1" size="256 256 256" brush="MOD/vox/ball.vox" object="planet" color="0.97 0.93 0.64"/>
 	</body>
 	<script pos="-15.9 113.19263 38.42812" rot="-10.0 0.0 0.0" file="MOD/script/player.lua">
@@ -26,7 +26,7 @@
 	<script pos="-19.8 111.52328 4.19797" rot="180.0 180.0 0.0" file="MOD/script/triggerTransform.lua">
 		<body tags="triggerparent" pos="0.0 2.1 -0.6" rot="180.0 180.0 0.0" dynamic="false">
 			<voxbox pos="7.9 0.0001 -6.1" rot="0.0 -90.0 0.0" size="393 30 74">
-				<trigger tags="gravityfield mass=1000 type=local exclusive" pos="17.7 2.8 3.6" type="box" size="39.3 3.0 7.4"/>
+				<trigger tags="gravityfield mass=3000 type=local exclusive" pos="17.7 2.8 3.6" type="box" size="39.3 3.0 7.4"/>
 			</voxbox>
 		</body>
 	</script>
