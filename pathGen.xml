@@ -1,0 +1,28 @@
+<scene version="1.1.0">
+	<body pos="25.7 -0.3 -15.0" dynamic="false">
+		<voxbox pos="-15.0 14.2 53.40001" rot="0" size="59 8 217"/>
+		<voxbox pos="-34.0 20.5 53.40001" rot="0" size="46 8 62"/>
+	</body>
+	<script file="MOD/script/path.lua" param0="totalsegments=200">
+		<group>
+			<location tags="location=1" pos="13.6 14.2 40.3" rot="0"/>
+			<location tags="location=2" pos="13.6 14.2 32.1" rot="0"/>
+			<location tags="location=3" pos="13.6 18.1 21.2" rot="0"/>
+			<location tags="location=3" pos="13.6 27.8 13.8" rot="0"/>
+			<location tags="location=4" pos="13.6 34.8 12.2" rot="0"/>
+		</group>
+	</script>
+	<script pos="27.2 69.8 0.0" rot="-180.0 -180.0 0.0" file="MOD/script/path.lua" param0="totalsegments=200">
+		<group pos="27.6 -0.0 24.0" rot="0.0 180.0 0.0">
+			<location tags="location=1" pos="13.6 14.2 40.3" rot="0"/>
+			<location tags="location=2" pos="13.6 14.2 32.1" rot="0"/>
+			<location tags="location=3" pos="13.6 18.1 21.2" rot="0"/>
+			<location tags="location=3" pos="13.6 27.8 13.8" rot="0"/>
+			<location tags="location=4" pos="13.6 34.8 12.2" rot="0"/>
+		</group>
+	</script>
+	<spawnpoint pos="-3.8 21.0 40.8" rot="-7.7 129.60001 -6.4"/>
+	<postprocessing pos="-11.5 0.1 -10.0" colorbalance="0.8 0.9 0.8" brightness="5" gamma="1.1" bloom="0.4"/>
+	<environment template="sunset" pos="-11.5 71.0 40.4" skybox="cold_sunset.dds" skyboxtint="0.61 0.76 0.92 " skyboxbrightness="1 " skyboxrot="300 " constant="0.003 0.003 0.003 " ambient="0.7" ambientexponent="10" fogColor="1 0.9 0.6" fogParams="40 500 1 8" sunBrightness="5" sunColorTint="0.66 0.84 0.99" sunSpread="0.2" sunLength="32" sunFogScale="2" sunGlare="0.4" exposure="0 0.3" brightness="3 " wetness="0 " puddleamount="0 " puddlesize="0.5 " rain="0 " nightlight="true " ambience="outdoor/caribbean_ocean.ogg 1 " fogscale="1 " slippery="0 " waterhurt="0 " snowdir="0 -1 0 0.2 " snowamount="0 0 " wind="0 0 0 "/>
+</scene>
+
