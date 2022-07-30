@@ -2,7 +2,7 @@
 	<script pos="5.9 0.0 0.0" rot="-10.0 0.0 0.0" file="main.lua"/>
 	<script pos="5.9 0.0 0.0" rot="-10.0 0.0 0.0" file="sandbox.lua"/>
 	<spawnpoint pos="7.4 75.53476 -13.31882" rot="10.0 -180.0 0.0"/>
-	<body tags="planet mass=1000" pos="-15.9 88.36227 -28.67965" rot="-10.0 0.0 0.0" dynamic="false">
+	<body tags="planet mass=1000" pos="-18.5 81.66227 -24.57965" rot="-10.0 0.0 0.0" dynamic="false">
 		<voxbox tags="planet" pos="-12.2 -12.7 -13.1" size="256 256 256" brush="MOD/vox/ball.vox" object="planet" color="0.97 0.93 0.64"/>
 	</body>
 	<body tags="planet mass=1000" pos="-15.6 100.40997 39.64632" rot="-10.0 0.0 0.0" dynamic="false">
@@ -18,7 +18,7 @@
 	<script pos="5.9 0.0 0.0" rot="-10.0 0.0 0.0" file="MOD/script/gravity.lua"/>
 	<script pos="-11.2 83.23646 6.74867" rot="-10.0 0.0 0.0" file="MOD/script/triggerTransform.lua">
 		<body tags="triggerparent" pos="0.0 1.4 -0.6" rot="180.0 180.0 0.0" dynamic="false">
-			<voxbox pos="7.9 -0.1 -33.2" rot="0.0 -90.0 0.0" size="709 30 74">
+			<voxbox pos="10.5 6.60001 -30.0" rot="-0.1 -93.0 -6.0" size="679 30 74">
 				<trigger tags="gravityfield mass=1000 type=local exclusive" pos="34.6 2.8 3.6" type="box" size="68.6 3.0 7.4"/>
 			</voxbox>
 		</body>
@@ -39,5 +39,217 @@
 			</body>
 		</script>
 	</group>
+	<group pos="-4.7 111.00001 -44.0" rot="20.0 -20.0 0.0">
+		<script pos="0.0" rot="0" file="MOD/script/triggerTransform.lua">
+			<body tags="triggerparent" pos="0.0" rot="0" dynamic="false">
+				<voxbox pos="7.9 0.0001 -6.1" rot="0.0 -90.0 0.0" size="108 30 74">
+					<trigger tags="gravityfield mass=1000 type=local exclusive" pos="5.7 2.8 3.60001" type="box" size="10.8 3.0 7.4"/>
+				</voxbox>
+			</body>
+		</script>
+		<group pos="-0.01624 1.75105 -11.21822" rot="20.0 0.0 0.0">
+			<script pos="0.0" rot="0" file="MOD/script/triggerTransform.lua">
+				<body tags="triggerparent" pos="0.0" rot="0" dynamic="false">
+					<voxbox pos="7.9 0.0001 -6.1" rot="0.0 -90.0 0.0" size="108 30 74">
+						<trigger tags="gravityfield mass=1000 type=local exclusive" pos="5.7 2.8 3.60001" type="box" size="10.8 3.0 7.4"/>
+					</voxbox>
+				</body>
+			</script>
+			<group pos="-0.01624 1.75105 -11.21822" rot="20.0 0.0 0.0">
+				<script pos="0.0" rot="0" file="MOD/script/triggerTransform.lua">
+					<body tags="triggerparent" pos="0.0" rot="0" dynamic="false">
+						<voxbox pos="7.9 0.0001 -6.1" rot="0.0 -90.0 0.0" size="108 30 74">
+							<trigger tags="gravityfield mass=1000 type=local exclusive" pos="5.7 2.8 3.60001" type="box" size="10.8 3.0 7.4"/>
+						</voxbox>
+					</body>
+				</script>
+				<group pos="-0.01624 1.75105 -11.21822" rot="20.0 0.0 0.0">
+					<script pos="0.0" rot="0" file="MOD/script/triggerTransform.lua">
+						<body tags="triggerparent" pos="0.0" rot="0" dynamic="false">
+							<voxbox pos="7.9 0.0001 -6.1" rot="0.0 -90.0 0.0" size="108 30 74">
+								<trigger tags="gravityfield mass=1000 type=local exclusive" pos="5.7 2.8 3.60001" type="box" size="10.8 3.0 7.4"/>
+							</voxbox>
+						</body>
+					</script>
+					<group pos="-0.01624 0.85105 -9.91823" rot="20.0 0.0 10.0">
+						<script pos="0.0" rot="0" file="MOD/script/triggerTransform.lua">
+							<body tags="triggerparent" pos="0.0" rot="0" dynamic="false">
+								<voxbox pos="7.9 0.0001 -6.1" rot="0.0 -90.0 0.0" size="108 30 74">
+									<trigger tags="gravityfield mass=1000 type=local exclusive" pos="5.7 2.8 3.60001" type="box" size="10.8 3.0 7.4"/>
+								</voxbox>
+							</body>
+						</script>
+						<group pos="-0.01624 0.85105 -9.91823" rot="20.0 0.0 10.0">
+							<script pos="0.0" rot="0" file="MOD/script/triggerTransform.lua">
+								<body tags="triggerparent" pos="0.0" rot="0" dynamic="false">
+									<voxbox pos="7.9 0.0001 -6.1" rot="0.0 -90.0 0.0" size="108 30 74">
+										<trigger tags="gravityfield mass=1000 type=local exclusive" pos="5.7 2.8 3.60001" type="box" size="10.8 3.0 7.4"/>
+									</voxbox>
+								</body>
+							</script>
+							<group pos="-0.01624 0.85105 -9.91823" rot="20.0 0.0 10.0">
+								<script pos="0.0" rot="0" file="MOD/script/triggerTransform.lua">
+									<body tags="triggerparent" pos="0.0" rot="0" dynamic="false">
+										<voxbox pos="7.9 0.0001 -6.1" rot="0.0 -90.0 0.0" size="108 30 74">
+											<trigger tags="gravityfield mass=1000 type=local exclusive" pos="5.7 2.8 3.60001" type="box" size="10.8 3.0 7.4"/>
+										</voxbox>
+									</body>
+								</script>
+								<group pos="-0.01624 0.85105 -9.91823" rot="20.0 0.0 10.0">
+									<script pos="0.0" rot="0" file="MOD/script/triggerTransform.lua">
+										<body tags="triggerparent" pos="0.0" rot="0" dynamic="false">
+											<voxbox pos="7.9 0.0001 -6.1" rot="0.0 -90.0 0.0" size="108 30 74">
+												<trigger tags="gravityfield mass=1000 type=local exclusive" pos="5.7 2.8 3.60001" type="box" size="10.8 3.0 7.4"/>
+											</voxbox>
+										</body>
+									</script>
+									<group pos="-0.01624 0.85105 -9.91823" rot="20.0 0.0 10.0">
+										<script pos="0.0" rot="0" file="MOD/script/triggerTransform.lua">
+											<body tags="triggerparent" pos="0.0" rot="0" dynamic="false">
+												<voxbox pos="7.9 0.0001 -6.1" rot="0.0 -90.0 0.0" size="108 30 74">
+													<trigger tags="gravityfield mass=1000 type=local exclusive" pos="5.7 2.8 3.60001" type="box" size="10.8 3.0 7.4"/>
+												</voxbox>
+											</body>
+										</script>
+										<group pos="-0.01624 0.85105 -9.91823" rot="20.0 0.0 10.0">
+											<script pos="0.0" rot="0" file="MOD/script/triggerTransform.lua">
+												<body tags="triggerparent" pos="0.0" rot="0" dynamic="false">
+													<voxbox pos="7.9 0.0001 -6.1" rot="0.0 -90.0 0.0" size="108 30 74">
+														<trigger tags="gravityfield mass=1000 type=local exclusive" pos="5.7 2.8 3.60001" type="box" size="10.8 3.0 7.4"/>
+													</voxbox>
+												</body>
+											</script>
+											<group pos="-0.01624 0.85105 -9.91823" rot="20.0 0.0 10.0">
+												<script pos="0.0" rot="0" file="MOD/script/triggerTransform.lua">
+													<body tags="triggerparent" pos="0.0" rot="0" dynamic="false">
+														<voxbox pos="7.9 0.0001 -6.1" rot="0.0 -90.0 0.0" size="108 30 74">
+															<trigger tags="gravityfield mass=1000 type=local exclusive" pos="5.7 2.8 3.60001" type="box" size="10.8 3.0 7.4"/>
+														</voxbox>
+													</body>
+												</script>
+												<group pos="0.78823 -0.00545 -10.27589" rot="0.0 -10.0 0.0">
+													<script pos="0.0" rot="0" file="MOD/script/triggerTransform.lua">
+														<body tags="triggerparent" pos="0.0" rot="0" dynamic="false">
+															<voxbox pos="7.9 0.0001 -6.1" rot="0.0 -90.0 0.0" size="108 30 74">
+																<trigger tags="gravityfield mass=1000 type=local exclusive" pos="5.7 2.8 3.60001" type="box" size="10.8 3.0 7.4"/>
+															</voxbox>
+														</body>
+													</script>
+													<group pos="0.78823 -0.00545 -10.27589" rot="0.0 -10.0 0.0">
+														<script pos="0.0" rot="0" file="MOD/script/triggerTransform.lua">
+															<body tags="triggerparent" pos="0.0" rot="0" dynamic="false">
+																<voxbox pos="7.9 0.0001 -6.1" rot="0.0 -90.0 0.0" size="108 30 74">
+																	<trigger tags="gravityfield mass=1000 type=local exclusive" pos="5.7 2.8 3.60001" type="box" size="10.8 3.0 7.4"/>
+																</voxbox>
+															</body>
+														</script>
+														<group pos="0.78823 -0.00545 -10.27589" rot="0.0 -10.0 0.0">
+															<script pos="0.0" rot="0" file="MOD/script/triggerTransform.lua">
+																<body tags="triggerparent" pos="0.0" rot="0" dynamic="false">
+																	<voxbox pos="7.9 0.0001 -6.1" rot="0.0 -90.0 0.0" size="108 30 74">
+																		<trigger tags="gravityfield mass=1000 type=local exclusive" pos="5.7 2.8 3.60001" type="box" size="10.8 3.0 7.4"/>
+																	</voxbox>
+																</body>
+															</script>
+															<group pos="0.78823 -0.00545 -10.27589" rot="0.0 -10.0 0.0">
+																<script pos="0.0" rot="0" file="MOD/script/triggerTransform.lua">
+																	<body tags="triggerparent" pos="0.0" rot="0" dynamic="false">
+																		<voxbox pos="7.9 0.0001 -6.1" rot="0.0 -90.0 0.0" size="108 30 74">
+																			<trigger tags="gravityfield mass=1000 type=local exclusive" pos="5.7 2.8 3.60001" type="box" size="10.8 3.0 7.4"/>
+																		</voxbox>
+																	</body>
+																</script>
+																<group pos="0.78823 0.69455 -10.27589" rot="10.0 -10.0 0.0">
+																	<script pos="0.0" rot="0" file="MOD/script/triggerTransform.lua">
+																		<body tags="triggerparent" pos="0.0" rot="0" dynamic="false">
+																			<voxbox pos="7.9 1.7001 -6.1" rot="0.0 -90.0 -10.0" size="108 30 74">
+																				<trigger tags="gravityfield mass=1000 type=local exclusive" pos="5.7 2.8 3.60001" type="box" size="10.8 3.0 7.4"/>
+																			</voxbox>
+																		</body>
+																	</script>
+																	<group pos="0.98823 2.39455 -10.2759" rot="10.0 -10.0 0.0">
+																		<script pos="0.0" rot="0" file="MOD/script/triggerTransform.lua">
+																			<body tags="triggerparent" pos="0.0" rot="0" dynamic="false">
+																				<voxbox pos="7.9 1.7001 -6.1" rot="0.0 -90.0 -10.0" size="108 30 74">
+																					<trigger tags="gravityfield mass=1000 type=local exclusive" pos="5.7 2.8 3.60001" type="box" size="10.8 3.0 7.4"/>
+																				</voxbox>
+																			</body>
+																		</script>
+																		<group pos="0.98823 2.39455 -10.2759" rot="10.0 -10.0 0.0">
+																			<script pos="0.0" rot="0" file="MOD/script/triggerTransform.lua">
+																				<body tags="triggerparent" pos="0.0" rot="0" dynamic="false">
+																					<voxbox pos="7.9 1.7001 -6.1" rot="0.0 -90.0 -10.0" size="108 30 74">
+																						<trigger tags="gravityfield mass=1000 type=local exclusive" pos="5.7 2.8 3.60001" type="box" size="10.8 3.0 7.4"/>
+																					</voxbox>
+																				</body>
+																			</script>
+																			<group pos="0.98823 2.39455 -10.2759" rot="10.0 -10.0 0.0">
+																				<script pos="0.0" rot="0" file="MOD/script/triggerTransform.lua">
+																					<body tags="triggerparent" pos="0.0" rot="0" dynamic="false">
+																						<voxbox pos="7.9 1.7001 -6.1" rot="0.0 -90.0 -10.0" size="108 30 74">
+																							<trigger tags="gravityfield mass=1000 type=local exclusive" pos="5.7 2.8 3.60001" type="box" size="10.8 3.0 7.4"/>
+																						</voxbox>
+																					</body>
+																				</script>
+																				<group pos="0.98823 2.39455 -10.2759" rot="10.0 -10.0 0.0">
+																					<script pos="0.0" rot="0" file="MOD/script/triggerTransform.lua">
+																						<body tags="triggerparent" pos="0.0" rot="0" dynamic="false">
+																							<voxbox pos="7.9 1.7001 -6.1" rot="0.0 -90.0 -10.0" size="108 30 74">
+																								<trigger tags="gravityfield mass=1000 type=local exclusive" pos="5.7 2.8 3.60001" type="box" size="10.8 3.0 7.4"/>
+																							</voxbox>
+																						</body>
+																					</script>
+																					<group pos="0.98823 2.39455 -10.2759" rot="10.0 -10.0 0.0">
+																						<script pos="0.0" rot="0" file="MOD/script/triggerTransform.lua">
+																							<body tags="triggerparent" pos="0.0" rot="0" dynamic="false">
+																								<voxbox pos="7.9 1.7001 -6.1" rot="0.0 -90.0 -10.0" size="108 30 74">
+																									<trigger tags="gravityfield mass=1000 type=local exclusive" pos="5.7 2.8 3.60001" type="box" size="10.8 3.0 7.4"/>
+																								</voxbox>
+																							</body>
+																						</script>
+																						<group pos="1.26674 1.12927 -9.39451" rot="0.1 -19.9 1.7">
+																							<script pos="0.0" rot="0" file="MOD/script/triggerTransform.lua">
+																								<body tags="triggerparent" pos="0.0" rot="0" dynamic="false">
+																									<voxbox pos="7.9 1.7001 -6.1" rot="0.0 -90.0 -10.0" size="108 30 74">
+																										<trigger tags="gravityfield mass=1000 type=local exclusive" pos="5.7 2.8 3.60001" type="box" size="10.8 3.0 7.4"/>
+																									</voxbox>
+																								</body>
+																							</script>
+																							<group pos="1.26674 1.12927 -9.39451" rot="0.1 -19.9 1.7">
+																								<script pos="0.0" rot="0" file="MOD/script/triggerTransform.lua">
+																									<body tags="triggerparent" pos="0.0" rot="0" dynamic="false">
+																										<voxbox pos="7.9 1.7001 -6.1" rot="0.0 -90.0 -10.0" size="108 30 74">
+																											<trigger tags="gravityfield mass=1000 type=local exclusive" pos="5.7 2.8 3.60001" type="box" size="10.8 3.0 7.4"/>
+																										</voxbox>
+																									</body>
+																								</script>
+																							</group>
+																						</group>
+																					</group>
+																				</group>
+																			</group>
+																		</group>
+																	</group>
+																</group>
+															</group>
+														</group>
+													</group>
+												</group>
+											</group>
+										</group>
+									</group>
+								</group>
+							</group>
+						</group>
+					</group>
+				</group>
+			</group>
+		</group>
+	</group>
+	<voxbox pos="-14.3 98.3092 -9.34089" rot="90.0 90.0 1.0" size="293 30 338">
+		<voxbox pos="16.30734 -6.77412 -0.00008" rot="180.0 180.0 -85.0" size="122 30 263">
+			<voxbox pos="-8.1 -0.00002 -0.09996" rot="0.0 0.0 0.0" size="122 30 57"/>
+		</voxbox>
+	</voxbox>
 </scene>
 
