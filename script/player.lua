@@ -71,6 +71,8 @@ function playerInit()
     end
     player.camera = "player" 
     player.vehicleBody = GetVehicleBody(GetPlayerVehicle())
+
+    player.inputDown = false
 end
 
 function planetsUpdate()
@@ -125,6 +127,7 @@ function playerUpdate(dt)
     player.vehicleBody = GetVehicleBody(GetPlayerVehicle())
     player.inGravity = "planet"
     player.strongestGravity = 0
+
 end
 
 function planetGravity(dt)
@@ -214,32 +217,42 @@ end
 
 function playerController()
     if player.camera ~= "independent" then
+        player.inputDown = false
         if InputDown("w") and player.onGround then 
             player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0,0,-0.25)))
+            player.inputDown = true
         elseif InputDown("w") and player.onGround == false then 
             player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0,0,-0.05)))
+            player.inputDown = true
         end
 
         if InputDown("s") and player.onGround then 
             player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0,0,0.25)))
+            player.inputDown = true
         elseif InputDown("s") and player.onGround == false then
             player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0,0,0.05)))
+            player.inputDown = true
         end
 
         if InputDown("a") and player.onGround then 
             player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(-0.25,0,0)))
+            player.inputDown = true
         elseif InputDown("a") and player.onGround == false then
             player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(-0.05,0,0)))
+            player.inputDown = true
         end
 
         if InputDown("d") and player.onGround then 
             player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0.25,0,0)))
+            player.inputDown = true
         elseif InputDown("d") and player.onGround == false then
             player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0.05,0,0)))
+            player.inputDown = true
         end
 
         if InputDown("space") and player.onGround then 
             ConstrainVelocity(player.body,0,player.center,TransformToParentVec(player.transform,Vec(0,1,0)),10)
+            player.inputDown = true
         end
     end
 end
@@ -376,17 +389,22 @@ function playerPhysicsUpdate(dt)
     local xAxis = VecNormalize(VecSub(player.headPos,alignWith))
     local zAxis = VecNormalize(VecSub(alignWith,TransformToParentPoint(player.headTransform,Vec(0,0,-1))))
     local down = QuatRotateQuat(QuatAlignXZ(xAxis, zAxis),QuatEuler(0,0,-90))
-    local camerax = InputValue("camerax")*-100
-    local targetRot = QuatRotateQuat(down,QuatEuler(0,camerax,0))
-    ConstrainOrientation(player.body,0,player.rot,targetRot,5,100)
+    local camerax = InputValue("camerax")*-50
+    player.rot = QuatRotateQuat(down,QuatEuler(0,camerax,0))
+    
+    SetBodyTransform(player.body,Transform(player.pos,player.rot))
+ 
     
     -------------------------------------------------- Player Standing on Surface --------------------------------------------------
     QueryRejectBody(player.body)
     local hit, dist, normal, shape = QueryRaycast(TransformToParentPoint(player.transform,Vec(0,0.4,0)),TransformToParentVec(player.headTransform,Vec(0,-1,0)),0.5,0,false)
 
     if hit then 
-        local t = Transform(VecLerp(player.contactPoint,GetBodyTransform(player.body).pos),player.rot)
+        local t = Transform(VecLerp(player.contactPoint,GetBodyTransform(player.body).pos,0.7),player.rot)
         SetBodyTransform(player.body,t)
+        local onPlanetVel = TransformToLocalVec(player.transform,player.vel)
+        player.vel = TransformToParentVec(player.transform,Vec(onPlanetVel[1],0,onPlanetVel[3]))
+
     end
 
 
@@ -396,46 +414,47 @@ function playerPhysicsUpdate(dt)
 --      DebugLine(TransformToParentPoint(player.transform, Vec(0,1,0)),VecAdd(TransformToParentPoint(player.transform, Vec(0,1,0)),VecSub(TransformToParentPoint(player.transform, Vec(0,1,0)),point)),1,1,1,1)
 --      ConstrainPosition(player.body,0,TransformToParentPoint(player.transform, Vec(0,0,0)),VecAdd(TransformToParentPoint(player.transform, Vec(0,0,0)),VecSub(TransformToParentPoint(player.transform, Vec(0,0,0)),point)),10)
 --  end
-    
+
     -------------------------------------------------- Air Resistance --------------------------------------------------
 
     player.vel = VecScale(player.vel,0.99)
 
     -------------------------------------------------- Plaer Planet Friction --------------------------------------------------
---  local hit, shape, point = IsPlayerOnGround()
---  local planetBody = GetShapeBody(shape)
---  local bt = GetBodyTransform(planetBody)
---  if hit and HasTag(planetBody,"planet") then
---       local FinalVel = GetBodyVelocityAtPos(planetBody,point)
---       local PlayerVel = player.vel
---       local MaxAcc = 5*dt
---       local VelDiff = VecSub(FinalVel,PlayerVel)
---       local l = VecLength(VelDiff)
---       if l>MaxAcc and player.onGroud and player.onPlanetTransform ~= -1 then
---           SetBodyTransform(player.body,Transform(TransformToParentTransform(bt,player.onPlanetTransform).pos,player.rot),true)
---       else
---           player.onPlanetTransform = TransformToLocalTransform(bt,player.contactPoint)
---       end
---       --Add to velocity here for moving from inputs
---  end
 
-local hit, shape, point = IsPlayerOnGround()
-local planetBody = GetShapeBody(shape)
-if hit and HasTag(planetBody,"planet") then
-     local FinalVel = GetBodyVelocityAtPos(planetBody,point)
-     local PlayerVel = player.vel
-     local MaxAcc = 5*dt
-     local VelDiff = VecSub(FinalVel,PlayerVel)
-     local l = VecLength(VelDiff)
-     if l>MaxAcc then
-         VelDiff = VecScale(VecNormalize(VelDiff),MaxAcc)
-         player.vel = VecAdd(player.vel,VelDiff)
+    local hit, shape, point = IsPlayerOnGround()
+    local planetBody = GetShapeBody(shape)
+    local bt = GetBodyTransform(planetBody)
+    if hit and HasTag(planetBody,"planet") then
+        local FinalVel = GetBodyVelocityAtPos(planetBody,player.contactPoint)
+        local onPlanetVel = TransformToLocalVec(player.transform,player.vel)
+        
+   --    DebugLine(player.pos,VecAdd(player.pos,player.vel),1,1,1,1)
+   --    DebugLine(player.pos,VecAdd(player.pos,FinalVel),1,0,1,1)
+   --    DebugLine(player.pos,VecAdd(player.pos,VecAdd(player.vel,FinalVel)),1,0,0,1)
+   --    DebugPrint(VecDot(player.vel,FinalVel))
+        if VecLength(FinalVel)+0.02<VecLength(onPlanetVel) and player.onGround then
+            dontMove = false
+            if player.inputDown == false then
 
-     else
-         player.vel = FinalVel
-     end
-     --Add to velocity here for moving from inputs
-end
+                if VecLength(player.vel) < VecLength(VecAdd(player.vel,FinalVel)) then
+                    player.vel = VecAdd(player.vel,FinalVel)
+                end
+         
+            end
+        else
+            if dontMove == false then
+                player.onPlanetTransform = TransformToLocalTransform(bt,player.transform)
+                dontMove = true
+            end
+            local camerax = InputValue("camerax")*-60
+            player.onPlanetTransform.rot = QuatRotateQuat(player.onPlanetTransform.rot,QuatEuler(0,camerax,0))
+            local newT = TransformToParentTransform(bt,player.onPlanetTransform)
+            SetBodyTransform(player.body,Transform(VecLerp(newT.pos,player.pos,0.9),newT.rot))
+        end
+    else
+        dontMove = false
+    end
+
     -------------------------------------------------- Gravity --------------------------------------------------
 
      --SetPlayerTransform(t,true)
@@ -482,9 +501,9 @@ end
         SetBodyVelocity(player.body,player.vel)
     end
 
-
 end
 
+dontMove = false
 ----------------------------------------------------- Helper Functions -----------------------------------------------------
 
 function IsPlayerOnGround()
@@ -561,6 +580,11 @@ end
 function rebound(value, min, max)
     return math.max(min, math.min(max, value))
 end
+
+function TransformLerp(a,b,t)
+    return Transform(VecLerp(a.pos,b.pos,t),QuatSlerp(a.rot,b.rot,t))
+end
+
 function draw(dt)
    -- local prevStr = 0
    -- for i=1,#planets do
