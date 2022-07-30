@@ -428,19 +428,9 @@ function playerPhysicsUpdate(dt)
         local FinalVel = GetBodyVelocityAtPos(planetBody,player.contactPoint)
         local onPlanetVel = TransformToLocalVec(player.transform,player.vel)
         
-   --    DebugLine(player.pos,VecAdd(player.pos,player.vel),1,1,1,1)
-   --    DebugLine(player.pos,VecAdd(player.pos,FinalVel),1,0,1,1)
-   --    DebugLine(player.pos,VecAdd(player.pos,VecAdd(player.vel,FinalVel)),1,0,0,1)
-   --    DebugPrint(VecDot(player.vel,FinalVel))
+
         if VecLength(FinalVel)+0.02<VecLength(onPlanetVel) and player.onGround then
             dontMove = false
-            if player.inputDown == false then
-
-                if VecLength(player.vel) < VecLength(VecAdd(player.vel,FinalVel)) then
-                    player.vel = VecAdd(player.vel,FinalVel)
-                end
-         
-            end
         else
             if dontMove == false then
                 player.onPlanetTransform = TransformToLocalTransform(bt,player.transform)
