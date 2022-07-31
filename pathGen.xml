@@ -1,29 +1,31 @@
 <scene version="1.1.0">
-	<body pos="25.7 -0.3 -15.0" dynamic="false">
-		<voxbox pos="-15.0 14.2 53.40001" rot="0" size="59 8 217"/>
-		<voxbox pos="-34.0 20.5 53.40001" rot="0" size="46 8 62"/>
+	<body pos="-3.5 18.9 40.9" dynamic="false">
+		<voxbox pos="-2.5 -0.25 -2.5" rot="0" size="50 5 50"/>
 	</body>
-	<script file="MOD/script/path.lua" param0="totalsegments=200">
+	<script file="MOD/script/path.lua" param0="totalsegments00">
 		<group pos="11.75 14.65 37.55" rot="0.0 0.0 0.0">
 			<body tags="segment=1" pos="1.85 0.05 0.05" dynamic="true">
 				<voxbox pos="-1.85 0.0 -0.8" size="36 1 8" brush="MOD/vox/arrowInvis.vox"/>
 			</body>
-			<body tags="segment=2" pos="1.85 0.05 -2.65" dynamic="true">
+			<body tags="segment" pos="1.85 0.05 -2.05" dynamic="true">
 				<voxbox pos="-1.85 0.0 -0.8" size="36 1 8" brush="MOD/vox/arrowInvis.vox"/>
 			</body>
-			<body tags="segment=2" pos="1.85 0.05 -11.75" rot="0.0 -45.0 0.0" dynamic="true">
+			<body tags="segment" pos="1.85 1.05 -7.85" rot="20.0 0.0 0.0" dynamic="true">
 				<voxbox pos="-1.85 0.0 -0.8" size="36 1 8" brush="MOD/vox/arrowInvis.vox"/>
 			</body>
-			<body tags="segment=2" pos="12.35 0.05 -14.35" rot="0.0 -90.0 0.0" dynamic="true">
+			<body tags="segment" pos="1.85 3.65 -13.55" rot="0.0 0.0 0.0" dynamic="true">
 				<voxbox pos="-1.85 0.0 -0.8" size="36 1 8" brush="MOD/vox/arrowInvis.vox"/>
 			</body>
-			<body tags="segment=3" pos="19.05 2.85 -14.35" rot="40.0 -90.0 0.0" dynamic="true">
+			<body tags="segment" pos="1.85 3.65 -26.35" rot="-10.0 0.0 0.0" dynamic="true">
 				<voxbox pos="-1.85 0.0 -0.8" size="36 1 8" brush="MOD/vox/arrowInvis.vox"/>
 			</body>
-			<body tags="segment=3" pos="23.65 7.15 -14.35" rot="95.0 -75.0 0.0" dynamic="true">
+			<body tags="segment" pos="1.85 2.25 -35.85" rot="30.0 0.0 0.0" dynamic="true">
 				<voxbox pos="-1.85 0.0 -0.8" size="36 1 8" brush="MOD/vox/arrowInvis.vox"/>
 			</body>
-			<body tags="segment=3" pos="23.65 11.75 -14.35" rot="144.0 -80.2 11.4" dynamic="true">
+			<body tags="segment" pos="1.85 7.75 -41.75" rot="70.0 0.0 0.0" dynamic="true">
+				<voxbox pos="-1.85 0.0 -0.8" size="36 1 8" brush="MOD/vox/arrowInvis.vox"/>
+			</body>
+			<body tags="segment" pos="1.85 14.35 -41.75" rot="90.0 0.0 0.0" dynamic="true">
 				<voxbox pos="-1.85 0.0 -0.8" size="36 1 8" brush="MOD/vox/arrowInvis.vox"/>
 			</body>
 		</group>
@@ -31,5 +33,8 @@
 	<spawnpoint pos="-3.8 21.0 40.8" rot="-7.7 129.60001 -6.4"/>
 	<postprocessing pos="-11.5 0.1 -10.0" colorbalance="0.8 0.9 0.8" brightness="5" gamma="1.1" bloom="0.4"/>
 	<environment template="sunset" pos="-11.5 71.0 40.4" skybox="cold_sunset.dds" skyboxtint="0.61 0.76 0.92 " skyboxbrightness="1 " skyboxrot="300 " constant="0.003 0.003 0.003 " ambient="0.7" ambientexponent="10" fogColor="1 0.9 0.6" fogParams="40 500 1 8" sunBrightness="5" sunColorTint="0.66 0.84 0.99" sunSpread="0.2" sunLength="32" sunFogScale="2" sunGlare="0.4" exposure="0 0.3" brightness="3 " wetness="0 " puddleamount="0 " puddlesize="0.5 " rain="0 " nightlight="true " ambience="outdoor/caribbean_ocean.ogg 1 " fogscale="1 " slippery="0 " waterhurt="0 " snowdir="0 -1 0 0.2 " snowamount="0 0 " wind="0 0 0 "/>
+	<voxbox pos="10.7 13.9 38.40001" rot="0.0 0.0 0.0" size="59 8 217"/>
+	<script file="main.lua"/>
+	<script file="sandbox.lua"/>
 </scene>
 
