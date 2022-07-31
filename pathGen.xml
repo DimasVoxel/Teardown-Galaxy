@@ -4,21 +4,28 @@
 		<voxbox pos="-34.0 20.5 53.40001" rot="0" size="46 8 62"/>
 	</body>
 	<script file="MOD/script/path.lua" param0="totalsegments=200">
-		<group>
-			<location tags="location=1" pos="13.6 14.2 40.3" rot="0"/>
-			<location tags="location=2" pos="13.6 14.2 32.1" rot="0"/>
-			<location tags="location=3" pos="13.6 18.1 21.2" rot="0"/>
-			<location tags="location=3" pos="13.6 27.8 13.8" rot="0"/>
-			<location tags="location=4" pos="13.6 34.8 12.2" rot="0"/>
-		</group>
-	</script>
-	<script pos="27.2 69.8 0.0" rot="-180.0 -180.0 0.0" file="MOD/script/path.lua" param0="totalsegments=200">
-		<group pos="27.6 -0.0 24.0" rot="0.0 180.0 0.0">
-			<location tags="location=1" pos="13.6 14.2 40.3" rot="0"/>
-			<location tags="location=2" pos="13.6 14.2 32.1" rot="0"/>
-			<location tags="location=3" pos="13.6 18.1 21.2" rot="0"/>
-			<location tags="location=3" pos="13.6 27.8 13.8" rot="0"/>
-			<location tags="location=4" pos="13.6 34.8 12.2" rot="0"/>
+		<group pos="11.75 14.65 37.55" rot="0.0 0.0 0.0">
+			<body tags="segment=1" pos="1.85 0.05 0.05" dynamic="true">
+				<voxbox pos="-1.85 0.0 -0.8" size="36 1 8" brush="MOD/vox/arrowInvis.vox"/>
+			</body>
+			<body tags="segment=2" pos="1.85 0.05 -2.65" dynamic="true">
+				<voxbox pos="-1.85 0.0 -0.8" size="36 1 8" brush="MOD/vox/arrowInvis.vox"/>
+			</body>
+			<body tags="segment=2" pos="1.85 0.05 -11.75" rot="0.0 -45.0 0.0" dynamic="true">
+				<voxbox pos="-1.85 0.0 -0.8" size="36 1 8" brush="MOD/vox/arrowInvis.vox"/>
+			</body>
+			<body tags="segment=2" pos="12.35 0.05 -14.35" rot="0.0 -90.0 0.0" dynamic="true">
+				<voxbox pos="-1.85 0.0 -0.8" size="36 1 8" brush="MOD/vox/arrowInvis.vox"/>
+			</body>
+			<body tags="segment=3" pos="19.05 2.85 -14.35" rot="40.0 -90.0 0.0" dynamic="true">
+				<voxbox pos="-1.85 0.0 -0.8" size="36 1 8" brush="MOD/vox/arrowInvis.vox"/>
+			</body>
+			<body tags="segment=3" pos="23.65 7.15 -14.35" rot="95.0 -75.0 0.0" dynamic="true">
+				<voxbox pos="-1.85 0.0 -0.8" size="36 1 8" brush="MOD/vox/arrowInvis.vox"/>
+			</body>
+			<body tags="segment=3" pos="23.65 11.75 -14.35" rot="144.0 -80.2 11.4" dynamic="true">
+				<voxbox pos="-1.85 0.0 -0.8" size="36 1 8" brush="MOD/vox/arrowInvis.vox"/>
+			</body>
 		</group>
 	</script>
 	<spawnpoint pos="-3.8 21.0 40.8" rot="-7.7 129.60001 -6.4"/>

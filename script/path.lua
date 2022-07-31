@@ -8,16 +8,12 @@ function init()
 
     bez = {}
 
-    locations = FindLocations("location",false)
+    segments = FindBodies("segment")
+    for i=1, #segments do 
+        table.insert(bez,GetBodyTransform(segments[i]))
 
-    for nums,locs in ipairs(locations) do
-        for num,loc in ipairs(locations) do
-            if tonumber(GetTagValue(loc,"location")) == nums then 
-                table.insert(bez,GetLocationTransform(loc))
-                
-            end
-        end
     end
+
 
     local t = Transform()
     local prev = Transform()
@@ -27,9 +23,11 @@ function init()
             prev = bezier(bez,i/totalSegments)
         else 
             t = bezier(bez,i/totalSegments)
-            
+
             local dist = math.ceil(AutoVecDist(prev.pos,t.pos)*10)
-            local rot = QuatRotateQuat(t.rot,QuatLookAt(prev.pos,t.pos))
+            local xAxis = VecNormalize(VecSub(t.pos, prev.pos))
+            local zAxis = VecNormalize(VecSub(VecLerp(t.pos,prev.pos,0.5), TransformToParentPoint(t, VecAdd(TransformToLocalPoint(t,VecLerp(t.pos,prev.pos,0.5)),Vec(0, -1,0)))))
+            local rot = QuatAlignXZ(xAxis, zAxis)
 
             local XML = [[
             	<body pos="0 0 0" dynamic="false">
@@ -61,6 +59,8 @@ function bezier(lerparray, frame)
     end
 end
 
+
+
 function tick()
 
 
@@ -68,15 +68,16 @@ function tick()
 
     bez = {}
 
-    locations = FindLocations("location",false)
+    segments = FindBodies("segment")
 
-    for nums,locs in ipairs(locations) do
-        for num,loc in ipairs(locations) do
-            if tonumber(GetTagValue(loc,"location")) == nums then 
-                table.insert(bez,GetLocationTransform(loc))
+    for nums,_ in ipairs(segments) do
+        for num,segment in ipairs(segments) do
+            if tonumber(GetTagValue(segment,"segment")) == nums then 
+                table.insert(bez,GetBodyTransform(segment))
             end
         end
     end
+
 
     local t = Transform()
     local prev = Transform()
@@ -87,6 +88,10 @@ function tick()
         else 
             t = bezier(bez,i/totalSegments)
 
+            local n = VecNormalize(VecSub(VecLerp(t.pos,prev.pos,0.5), TransformToParentPoint(t, VecAdd(TransformToLocalPoint(t,VecLerp(t.pos,prev.pos,0.5)),Vec(0, -1,0)))))
+            DebugLine(VecLerp(t.pos,prev.pos,0.5),VecAdd(t.pos,n),0.1,0.1,0.1,1)
+
+            DebugLine(t.pos,TransformToParentPoint(t, Vec(0, 1,0)),1,0,1,1)
             DebugLine(prev.pos,t.pos,0,0,0,1)
             prev = TransformCopy(t)
         end
