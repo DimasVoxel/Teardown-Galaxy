@@ -29,6 +29,7 @@ function planetsUpdate()
         local min, max = GetShapeBounds(planet.shape)
         planet.center = VecLerp(min,max,0.5)
         planet.mass = tonumber(GetTagValue(planet.body, 'mass'))
+        if HasTag(planet.body,'type') then planet.type = GetTagValue(planet.body, 'type') else planet.type = "attract" end -- can be either attract(default) or repell
         planets[num] = planet 
     end 
 end
@@ -51,6 +52,9 @@ function gravityUpdate(dt)
                     local coef = 7200/mass
                     local gravConst = 0.00015
                     local strength = dt*(gravConst*planet.mass*((mass*coef)-100) / (dist * dist))
+                    if planet.type == "repel" then
+                        strength = strength* -1
+                    end
                     vel = VecAdd(vel,VecScale(dir,strength))
                 end
             end       

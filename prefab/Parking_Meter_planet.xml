@@ -1,0 +1,288 @@
+<prefab version="1.1.0">
+	<group name="instance=MOD/Parking_Meter_planet.xml" pos="0.0 0.0 0.0" rot="0.0 0.0 0.0">
+		<vox pos="0.0 13.3 0.0" texture="17" file="MOD/vox/parking planet.vox" object="planet"/>
+		<group name="props">
+			<group name="lights" pos="0.0 8.3 0.0">
+				<group name="clusters" pos="0.0 0.0 0.0">
+					<group name="Light_cluster" pos="0.0 17.4 12.3" rot="-90.0 -180.0 0.0">
+						<compound pos="0.0 0.0 0.0">
+							<vox pos="0.0 0.0 0.3" rot="0.0 -90.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+							<vox pos="0.3 0.0 0.0" rot="0.0 0.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+							<vox pos="-0.3 0.0 0.0" rot="0.0 -180.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+							<vox pos="0.0 0.0 -0.3" rot="0.0 90.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+						</compound>
+					</group>
+					<group name="Light_cluster" pos="-0.0 17.5 -12.3" rot="0.0 270.0 90.0">
+						<compound pos="0.0 0.0 0.0">
+							<vox pos="0.0 0.0 0.3" rot="0.0 -90.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+							<vox pos="0.3 0.0 0.0" rot="0.0 0.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+							<vox pos="-0.3 0.0 0.0" rot="0.0 -180.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+							<vox pos="0.0 0.0 -0.3" rot="0.0 90.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+						</compound>
+					</group>
+					<group name="Light_cluster" pos="12.3 17.5 0.0" rot="0.0 0.0 -90.0">
+						<compound pos="0.0 0.0 0.0">
+							<vox pos="0.0 0.0 0.3" rot="0.0 -90.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+							<vox pos="0.3 0.0 0.0" rot="0.0 0.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+							<vox pos="-0.3 0.0 0.0" rot="0.0 -180.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+							<vox pos="0.0 0.0 -0.3" rot="0.0 90.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+						</compound>
+					</group>
+					<group name="Light_cluster" pos="-12.3 17.6 0.0" rot="90.0 -90.0 0.0">
+						<compound pos="0.0 0.0 0.0">
+							<vox pos="0.0 0.0 0.3" rot="0.0 -90.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+							<vox pos="0.3 0.0 0.0" rot="0.0 0.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+							<vox pos="-0.3 0.0 0.0" rot="0.0 -180.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+							<vox pos="0.0 0.0 -0.3" rot="0.0 90.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+						</compound>
+					</group>
+					<group name="Light_cluster" pos="0.0 5.2 0.0" rot="-180.0 -180.0 0.0">
+						<compound pos="0.0 0.0 0.0">
+							<vox pos="0.0 0.0 0.3" rot="0.0 -90.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+							<vox pos="0.3 0.0 0.0" rot="0.0 0.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+							<vox pos="-0.3 0.0 0.0" rot="0.0 -180.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light tags="fxflicker=2" pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+							<vox pos="0.0 0.0 -0.3" rot="0.0 90.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+						</compound>
+					</group>
+					<group name="Light_cluster" pos="0.0 29.8 -0.0" rot="0.0 -90.0 0.0">
+						<compound pos="0.0 0.0 0.0">
+							<vox pos="0.0 0.0 0.3" rot="0.0 -90.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+							<vox pos="0.3 0.0 0.0" rot="0.0 0.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+							<vox pos="-0.3 0.0 0.0" rot="0.0 -180.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light tags="fxflicker=2" pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+							<vox pos="0.0 0.0 -0.3" rot="0.0 90.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+						</compound>
+					</group>
+				</group>
+				<group name="doubles" pos="0.0 4.9 0.0">
+					<group name="double" pos="0.3 3.90259 8.69741" rot="135.0 0.0 0.0">
+						<compound pos="-0.3 0.0 0.0">
+							<vox pos="-0.3 0.0 0.0" rot="0.0 180.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+							<vox pos="0.3 0.0 0.0" rot="0.0 0.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light tags="fxflicker=7" pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+						</compound>
+					</group>
+					<group name="double" pos="0.3 21.29741 -8.69741" rot="-45.0 0.0 0.0">
+						<compound pos="-0.3 0.0 0.0">
+							<vox pos="-0.3 0.0 0.0" rot="0.0 180.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+							<vox pos="0.3 0.0 0.0" rot="0.0 0.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+						</compound>
+					</group>
+					<group name="double" pos="0.3 3.90259 -8.69741" rot="-135.0 0.0 0.0">
+						<compound pos="-0.3 0.0 0.0">
+							<vox pos="-0.3 0.0 0.0" rot="0.0 180.0 0.0" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+							<vox pos="0.3 0.0 0.0" rot="0.0 0.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+						</compound>
+					</group>
+					<group name="double" pos="0.3 21.29741 8.69741" rot="45.0 0.0 0.0">
+						<compound pos="-0.3 0.0 0.0">
+							<vox pos="-0.3 0.0 0.0" rot="0.0 180.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+							<vox pos="0.3 0.0 0.0" rot="0.0 0.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+						</compound>
+					</group>
+					<group name="double" pos="8.69741 21.29741 0.3" rot="-45.0 -90.0 0.0">
+						<compound pos="-0.3 0.0 0.0">
+							<vox pos="-0.3 0.0 0.0" rot="0.0 180.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+							<vox pos="0.3 0.0 0.0" rot="0.0 0.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light tags="fxflicker=3" pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+						</compound>
+					</group>
+					<group name="double" pos="8.69741 3.90259 0.3" rot="-135.0 -90.0 0.0">
+						<compound pos="-0.3 0.0 0.0">
+							<vox pos="-0.3 0.0 0.0" rot="0.0 180.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+							<vox pos="0.3 0.0 0.0" rot="0.0 0.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+						</compound>
+					</group>
+					<group name="double" pos="-8.69741 21.29741 0.3" rot="45.0 -90.0 0.0">
+						<compound pos="-0.3 0.0 0.0">
+							<vox pos="-0.3 0.0 0.0" rot="0.0 180.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+							<vox pos="0.3 0.0 0.0" rot="0.0 0.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+						</compound>
+					</group>
+					<group name="double" pos="-8.69741 3.90259 0.3" rot="135.0 -90.0 0.0">
+						<compound pos="-0.3 0.0 0.0">
+							<vox pos="-0.3 0.0 0.0" rot="0.0 180.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+							<vox pos="0.3 0.0 0.0" rot="0.0 0.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+						</compound>
+					</group>
+					<group name="double" pos="-8.69741 12.9 8.69741" rot="0.0 45.0 90.0">
+						<compound pos="-0.3 0.0 0.0">
+							<vox pos="-0.3 0.0 0.0" rot="0.0 180.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+							<vox pos="0.3 0.0 0.0" rot="0.0 0.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+						</compound>
+					</group>
+					<group name="double" pos="8.69741 12.9 8.69741" rot="0.0 135.0 90.0">
+						<compound pos="-0.3 0.0 0.0">
+							<vox pos="-0.3 0.0 0.0" rot="0.0 180.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+							<vox pos="0.3 0.0 0.0" rot="0.0 0.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+						</compound>
+					</group>
+					<group name="double" pos="-8.69741 12.9 -8.69741" rot="0.0 -45.0 90.0">
+						<compound pos="-0.3 0.0 0.0">
+							<vox pos="-0.3 0.0 0.0" rot="0.0 180.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light tags="fxflicker=6" pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+							<vox pos="0.3 0.0 0.0" rot="0.0 0.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light tags="fxflicker=4" pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+						</compound>
+					</group>
+					<group name="double" pos="8.69741 12.9 -8.69741" rot="0.0 -135.0 90.0">
+						<compound pos="-0.3 0.0 0.0">
+							<vox pos="-0.3 0.0 0.0" rot="0.0 180.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+							<vox pos="0.3 0.0 0.0" rot="0.0 0.0 0.0" texture="18" file="MOD/vox/parking planet.vox" object="light">
+								<light pos="0.25 5.0 0.0" rot="90.0 0.0 0.0" type="area" color="1.0 0.81 0.5" scale="6" size="0.5" sound="MOD/buzz.ogg"/>
+							</vox>
+						</compound>
+					</group>
+				</group>
+			</group>
+			<group name="signs/parking meters">
+				<vox pos="-12.093 25.85 -2.741" rot="0.0 -13.0 90.0" desc='"Handicap Parking Only"' texture="6" file="MOD/vox/parking planet.vox" object="handicap sign"/>
+				<vox pos="12.093 25.85 2.741" rot="0.0 167.0 90.0" desc='"Handicap Parking Only"' texture="6" file="MOD/vox/parking planet.vox" object="handicap sign"/>
+				<vox pos="-11.594 25.85 -4.397" rot="0.0 -21.0 90.0" desc='"Handicap Parking Only"' texture="6" file="MOD/vox/parking planet.vox" object="handicap sign"/>
+				<vox pos="11.594 25.85 4.397" rot="0.0 159.0 90.0" desc='"Handicap Parking Only"' texture="6" file="MOD/vox/parking planet.vox" object="handicap sign"/>
+				<group pos="0.0 13.5 0.0">
+					<group pos="17.4 12.3 0.0" rot="-31.0 0.0 0.0">
+						<vox pos="-17.35 -12.4 0.05" rot="180.0 -180.0 0.0" desc='"A parking meter. Kinda charges a lot"' texture="6" file="MOD/vox/parking planet.vox" object="parking meter"/>
+						<vox pos="-17.45 12.4 0.05" desc='"A parking meter. Kinda charges a lot"' texture="6" file="MOD/vox/parking planet.vox" object="parking meter"/>
+					</group>
+					<group pos="17.4 12.3 0.0" rot="60.0 0.0 0.0">
+						<vox pos="-17.35 -12.4 0.05" rot="180.0 -180.0 0.0" desc='"A parking meter. Kinda charges a lot"' texture="6" file="MOD/vox/parking planet.vox" object="parking meter"/>
+						<vox pos="-17.45 12.4 0.05" desc='"A parking meter. Kinda charges a lot"' texture="6" file="MOD/vox/parking planet.vox" object="parking meter"/>
+					</group>
+				</group>
+				<group pos="0.0 13.5 0.0" rot="0.0 -90.0 0.0">
+					<group pos="17.4 12.3 0.0" rot="-78.0 0.0 0.0">
+						<vox pos="-17.35 -12.4 0.05" rot="180.0 -180.0 0.0" desc='"A parking meter. Kinda charges a lot"' texture="6" file="MOD/vox/parking planet.vox" object="parking meter"/>
+						<vox pos="-17.45 12.4 0.05" desc='"A parking meter. Kinda charges a lot"' texture="6" file="MOD/vox/parking planet.vox" object="parking meter"/>
+					</group>
+					<group pos="17.4 12.3 0.0" rot="13.0 0.0 0.0">
+						<vox pos="-17.35 -12.4 0.05" rot="180.0 -180.0 0.0" desc='"A parking meter. Kinda charges a lot"' texture="6" file="MOD/vox/parking planet.vox" object="parking meter"/>
+						<vox pos="-17.45 12.4 0.05" desc='"A parking meter. Kinda charges a lot"' texture="6" file="MOD/vox/parking planet.vox" object="parking meter"/>
+					</group>
+				</group>
+			</group>
+			<group name="dynamic(?)">
+				<group name="cones" pos="-1.7 25.9 -1.4">
+					<vox pos="7.25 7.95 9.25" rot="46.2 29.7 -4.5" file="MOD/vox/parking planet.vox" object="cone"/>
+					<vox pos="7.95 0.4 -9.45" rot="-90.0 -28.0 0.0" file="MOD/vox/parking planet.vox" object="cone"/>
+					<vox pos="-7.85 0.3 9.55" rot="-90.0 129.0 0.0" file="MOD/vox/parking planet.vox" object="cone"/>
+					<vox pos="10.1 -6.7 8.0" rot="-126.8 -116.8 15.3" file="MOD/vox/parking planet.vox" object="cone"/>
+					<vox pos="-2.3 -8.35 -7.2" rot="-142.39999 -8.6 -29.3" file="MOD/vox/parking planet.vox" object="cone"/>
+				</group>
+				<group name="misc." pos="0.0 39.75 -0.85"/>
+			</group>
+			<group name="guard_shack" pos="-0.0 43.2 0.0" rot="-28.1 -40.9 -1.4">
+				<vox pos="0.40717 -3.35952 -8.34073" texture="10" file="MOD/vox/parking planet.vox" object="guard_shack">
+					<vox pos="1.2 0.9 0.0" texture="19" prop="true" file="MOD/vox/parking planet.vox" object="door">
+						<joint pos="0.0 0.3 0.5" rot="-90.0 90.0 0.0" type="hinge" rotstrength="0.01" limits="-100 0"/>
+						<joint pos="0.0 2.0 0.5" rot="-90.0 90.0 0.0" type="hinge" rotstrength="0.01" limits="-100 0"/>
+					</vox>
+					<group name="calendar" pos="0.3 1.9 1.0">
+						<vox pos="0.0 -0.008 -0.006" rot="10.0 0.0 0.0" prop="true" file="MOD/vox/parking planet.vox" object="cal-bottom"/>
+						<vox pos="0.0 0.6 0.1" prop="true" file="MOD/vox/parking planet.vox" object="cal-upper"/>
+						<joint pos="0.2 0.6 0.0" collide="true"/>
+						<joint pos="-0.2 0.6 0.0" collide="true"/>
+						<joint pos="0.0 1.2 0.1" collide="true"/>
+					</group>
+				</vox>
+				<vox pos="0.40717 0.04047 -8.34073" file="MOD/vox/parking planet.vox" object="interior_light">
+					<light pos="0.0 0.05 0.0" rot="90.0 0.0 0.0"/>
+				</vox>
+				<vox pos="2.00717 -0.05952 -8.34073" rot="0.0 -90.0 0.0" file="MOD/vox/parking planet.vox" object="exterior_light">
+					<light tags="fxflicker=5" pos="0.0 0.0 -0.1" rot="100.0 0.0 0.0" type="area" scale="3" size="1.2"/>
+				</vox>
+				<vox pos="0.50717 -2.55953 -8.04073" rot="0.0 -10.0 0.0" prop="true" file="MOD/vox/parking planet.vox" object="chair"/>
+			</group>
+		</group>
+	</group>
+</prefab>
+
