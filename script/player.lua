@@ -85,6 +85,7 @@ function planetsUpdate()
         local min, max = GetShapeBounds(planet.shape)
         planet.center = VecLerp(min,max,0.5)
         planet.mass = tonumber(GetTagValue(planet.body, 'mass'))
+        if HasTag(planet.body,'type') then planet.type = GetTagValue(planet.body, 'type') else planet.type = "attract" end -- can be either attract(default) or repel
         planets[num] = planet 
     end 
 end
@@ -138,12 +139,15 @@ function planetGravity(dt)
         local dist = VecDist(planet.center,player.pos)
         local gravConst = 1
         local strength = dt*(gravConst*planet.mass / (dist * dist))
-        player.vel = VecAdd(player.vel,VecScale(dir,strength))
         if player.strongestGravity < strength then  
             player.parent = planet.body
             player.inGravity = "planet"
             player.strongestGravity = strength
         end
+        if planet.type == "repel" then
+            strength = strength* -1
+        end
+        player.vel = VecAdd(player.vel,VecScale(dir,strength))
     end
 end
 
@@ -218,34 +222,34 @@ end
 function playerController()
     if player.camera ~= "independent" then
         player.inputDown = false
-        if InputDown("w") and player.onGround then 
+        if InputDown("up") and player.onGround then 
             player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0,0,-0.25)))
             player.inputDown = true
-        elseif InputDown("w") and player.onGround == false then 
+        elseif InputDown("up") and player.onGround == false then 
             player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0,0,-0.05)))
             player.inputDown = true
         end
 
-        if InputDown("s") and player.onGround then 
+        if InputDown("down") and player.onGround then 
             player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0,0,0.25)))
             player.inputDown = true
-        elseif InputDown("s") and player.onGround == false then
+        elseif InputDown("down") and player.onGround == false then
             player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0,0,0.05)))
             player.inputDown = true
         end
 
-        if InputDown("a") and player.onGround then 
+        if InputDown("left") and player.onGround then 
             player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(-0.25,0,0)))
             player.inputDown = true
-        elseif InputDown("a") and player.onGround == false then
+        elseif InputDown("left") and player.onGround == false then
             player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(-0.05,0,0)))
             player.inputDown = true
         end
 
-        if InputDown("d") and player.onGround then 
+        if InputDown("right") and player.onGround then 
             player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0.25,0,0)))
             player.inputDown = true
-        elseif InputDown("d") and player.onGround == false then
+        elseif InputDown("right") and player.onGround == false then
             player.vel = VecAdd(player.vel,TransformToParentVec(player.transform, Vec(0.05,0,0)))
             player.inputDown = true
         end
@@ -372,9 +376,9 @@ function playerPhysicsUpdate(dt)
 
     -------------------------------------------------- Player Gravity Align --------------------------------------------------
    local alignWith = Vec()
+   local planetShape = 0
     if player.inGravity == "planet" then
         local shapes = GetBodyShapes(player.parent)
-        local planetShape = 0 
         for i=1, #shapes do 
             if HasTag(shapes[i],"planet") then 
                 planetShape = shapes[i]
@@ -389,8 +393,16 @@ function playerPhysicsUpdate(dt)
     local xAxis = VecNormalize(VecSub(player.headPos,alignWith))
     local zAxis = VecNormalize(VecSub(alignWith,TransformToParentPoint(player.headTransform,Vec(0,0,-1))))
     local down = QuatRotateQuat(QuatAlignXZ(xAxis, zAxis),QuatEuler(0,0,-90))
+    if GetTagValue(GetShapeBody(planetShape),"type") == "repel" then 
+        down = QuatRotateQuat(QuatAlignXZ(xAxis, zAxis),QuatEuler(0,0,90))
+    end
+    
     local camerax = InputValue("camerax")*-50
     player.rot = QuatRotateQuat(down,QuatEuler(0,camerax,0))
+
+
+
+    
     
     SetBodyTransform(player.body,Transform(player.pos,player.rot))
  
