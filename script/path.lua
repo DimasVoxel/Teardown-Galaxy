@@ -11,9 +11,7 @@ function init()
     segments = FindBodies("segment")
     for i=1, #segments do 
         table.insert(bez,GetBodyTransform(segments[i]))
-
     end
-
 
     local t = Transform()
     local prev = Transform()
@@ -24,7 +22,7 @@ function init()
         else 
             t = bezier(bez,i/totalSegments)
 
-            local dist = math.ceil(AutoVecDist(prev.pos,t.pos)*10)
+            local dist = AutoVecDist(prev.pos,t.pos)*10
             local middle = dist/10/2
             local XML = [[
                 <body pos="0 0 0" dynamic="false">
