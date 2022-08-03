@@ -431,7 +431,7 @@ function playerPhysicsUpdate(dt)
 
     player.vel = VecScale(player.vel,0.99)
 
-    -------------------------------------------------- Plaer Planet Friction --------------------------------------------------
+    -------------------------------------------------- Player Planet Friction --------------------------------------------------
 
     local hit, shape, point = IsPlayerOnGround()
     local planetBody = GetShapeBody(shape)
@@ -443,6 +443,10 @@ function playerPhysicsUpdate(dt)
 
         if VecLength(FinalVel)+0.02<VecLength(onPlanetVel) and player.onGround then
             dontMove = false
+            if player.inputDown == false then 
+                local coef = clamp(1+(VecLength(player.vel)-10)/10,0.85,1)
+                player.vel = VecScale(player.vel,coef)
+            end
         else
             if dontMove == false then
                 player.onPlanetTransform = TransformToLocalTransform(bt,player.transform)
