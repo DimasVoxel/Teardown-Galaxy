@@ -1,0 +1,176 @@
+<prefab version="1.1.0">
+	<group name="Gasstation" pos="8.625 -2.135 209.82501" rot="0.0 -58.0 0.0">
+		<vox pos="10.3 2.7 -5.6" rot="0" file="MOD/assets/buildings/vox/gasstation.vox" object="1"/>
+		<vox pos="1.1 2.8 -12.5" rot="0" file="MOD/assets/buildings/vox/gasstation.vox" object="1-1"/>
+		<vox pos="3.3 2.8 -14.7" rot="0" file="MOD/assets/buildings/vox/gasstation.vox" object="1-2"/>
+		<vox pos="10.4 2.8 -9.3" rot="0" file="MOD/assets/buildings/vox/gasstation.vox" object="1-4"/>
+		<vox pos="7.4 2.8 -2.8" rot="0" file="MOD/assets/buildings/vox/gasstation.vox" object="1-5"/>
+		<vox pos="4.7 2.7 -9.3" rot="0" file="MOD/assets/buildings/vox/gasstation.vox" object="1-6"/>
+		<vox pos="7.8 2.8 -15.7" rot="0" file="MOD/assets/buildings/vox/gasstation.vox" object="1-7"/>
+		<vox pos="7.5 6.1 -8.8" rot="0" file="MOD/assets/buildings/vox/gasstation.vox" object="1-8"/>
+		<vox pos="5.4 2.7 -9.3" rot="0" file="MOD/assets/buildings/vox/gasstation.vox" object="1-9"/>
+		<vox pos="7.7 6.4 -9.3" rot="0" file="MOD/assets/buildings/vox/gasstation.vox" object="1-11"/>
+		<vox pos="2.8 5.0 -12.5" rot="0" file="MOD/assets/buildings/vox/gasstation.vox" object="1-12"/>
+		<group name="door" pos="10.3 2.8 -12.4">
+			<vox pos="-0.1 0.05 -0.72501" rot="0" prop="true" file="MOD/assets/buildings/vox/gasstation.vox" object="1-13"/>
+			<vox pos="-0.1 0.05 0.9" rot="0" prop="true" file="MOD/assets/buildings/vox/gasstation.vox" object="1-14"/>
+			<joint pos="-0.05 0.175 -1.5" rot="-90 0.0 0.0" type="hinge" rotstrength="0.03" rotspring="0.1" collide="false"/>
+			<joint pos="-0.05 0.175 1.6" rot="-90.0 -180 0.0" type="hinge" rotstrength="0.03" rotspring="0.1" collide="false"/>
+			<joint pos="-0.05 3.075 -1.5" rot="0.0 0.0 0.0" rotstrength="0.03" rotspring="0.3" collide="false"/>
+			<joint pos="-0.05 3.075 1.625" rot="0.0 0.0 0.0" rotstrength="0.03" rotspring="0.3" collide="false"/>
+		</group>
+		<vox pos="3.3 2.75 -10.3" rot="0" file="MOD/assets/buildings/vox/gasstation.vox" object="1-3"/>
+		<vox pos="5.6 5.1 -9.29998" rot="0" file="MOD/assets/buildings/vox/gasstation.vox" object="1-15"/>
+		<vox pos="15.7 6.5 -12.3" rot="0" prop="true" file="MOD/assets/buildings/vox/gasstation.vox" object="roof1">
+			<joint pos="-4.70001 0.4 2.6" rot="0.0 0.0 0.0" size="0.2" collide="false"/>
+			<joint pos="-1.4 0.1 2.3" rot="0.0 0.0 0.0" size="0.2" collide="false"/>
+			<joint pos="-1.40002 0.1 -0.6" rot="0.0 0.0 0.0" size="0.2" collide="false"/>
+			<joint pos="-4.70003 0.4 -2.6" rot="0.0 0.0 0.0" size="0.2" collide="false"/>
+		</vox>
+		<vox pos="10.2 2.8 -12.3" rot="0" file="MOD/assets/buildings/vox/gasstation.vox" object="1-16"/>
+		<vox pos="3.0 2.7 -15.1" rot="0" file="MOD/assets/buildings/vox/gasstation.vox" object="1-17"/>
+		<instance pos="14.3 2.8 -13.9" rot="0.0 0.0 0.0" file="MOD/assets/props/xml/fuelpump.xml"/>
+		<group name="instance=MOD/assets/props/xml/fuelpump.xml" pos="20.125 2.8 -13.90002" rot="0.0 0.0 0.0">
+			<vox pos="-0.025 1.0 -0.3" rot="0" prop="true" file="MOD/assets/buildings/vox/gasstation.vox" object="1-19">
+				<rope pos="0.0 -0.35 0.0" slack="2" strength="5" maxstretch="2">
+					<location pos="0.0 0.375 -0.1" rot="0.0 0.0 0.0"/>
+					<location pos="0.125 0.375 0.2" rot="0.0 0.0 0.0"/>
+				</rope>
+			</vox>
+			<vox tags="explosive=0.6" pos="0.0 0.0 0.075" rot="0" strength="10" file="MOD/assets/buildings/vox/gasstation.vox" object="pump-2"/>
+		</group>
+		<vox pos="14.3 2.7 -11.5" rot="0" strength="0.5" file="MOD/assets/buildings/vox/gasstation.vox" object="1-23"/>
+		<vox pos="20.2 2.7 -11.5" rot="0" file="MOD/assets/buildings/vox/gasstation.vox" object="1-24"/>
+		<vox pos="8.7 2.8 -1.7" rot="0" density="5" strength="3" prop="true" file="MOD/assets/buildings/vox/gasstation.vox" object="1-26"/>
+		<vox pos="6.2 2.8 -1.7" rot="0" density="5" strength="3" prop="true" file="MOD/assets/buildings/vox/gasstation.vox" object="1-27"/>
+		<vox pos="4.8 2.8 -12.89997" rot="0" file="MOD/assets/buildings/vox/gasstation.vox" object="inner-back-wood"/>
+		<vox pos="4.6 2.8 -12.89999" rot="0" file="MOD/assets/buildings/vox/gasstation.vox" object="inner-front-wood"/>
+		<vox pos="4.5 2.9 -12.89999" rot="0" prop="true" file="MOD/assets/buildings/vox/gasstation.vox" object="inner-blade-wood">
+			<joint pos="0.056 0.175 0.574" rot="-90 0.0 0.0" type="hinge" collide="false"/>
+			<joint pos="0.05584 1.675 0.57386" rot="-90 0.0 0.0" type="hinge" collide="false"/>
+		</vox>
+		<instance pos="14.3 2.8 -9.575" rot="0.0 0.0 0.0" file="MOD/assets/props/xml/fuelpumpleft.xml"/>
+		<instance pos="20.125 2.8 -9.575" rot="0.0 0.0 0.0" file="MOD/assets/props/xml/fuelpumpleft.xml"/>
+		<vox tags="explosive=5" pos="7.629 2.7 -16.851" rot="0.0 90.0 0.0" file="MOD/assets/props/propane_huge.vox">
+			<vox pos="-4.6 1.3 -7.3" rot="0.0 90.0 0.0" file="MOD/assets/industrial/pipes_and_ventilation.vox" object="waterdrain-vertical-plain"/>
+			<vox pos="-5.1 1.3 -7.3" rot="0.0 90.0 0.0" file="MOD/assets/industrial/pipes_and_ventilation.vox" object="waterdrain-vertical-plain"/>
+			<vox pos="-0.4 2.8 -1.7" rot="0.0 0.0 -90.0" file="MOD/assets/industrial/pipes_and_ventilation.vox" object="mediumpipe-bend-plain"/>
+			<vox pos="-0.40002 2.8 -3.3" rot="-90.0 -90.0 0.0" file="MOD/assets/industrial/pipes_and_ventilation.vox" object="mediumpipe-bend-plain"/>
+			<vox pos="-0.00007 1.0 -3.10001" rot="-90.0 0.0 0.0" file="MOD/assets/industrial/pipes_and_ventilation.vox" object="mediumpipe-straight-plain"/>
+			<vox pos="-4.2 0.0 -7.7" rot="0.0 0.0 0.0" file="MOD/assets/industrial/pipes_and_ventilation.vox" object="ventilation-intake-plain"/>
+		</vox>
+		<voxagon tags="unbreakable" pos="0.0 1.55 0.0" brush="MOD/assets/brush/fundaments.vox" object="concrete_medium" extrude="12">
+			<vertex pos="-6.5 -7.9"/>
+			<vertex pos="-5.6 -10.5"/>
+			<vertex pos="-4.5 -13.5"/>
+			<vertex pos="-3.7 -16.1"/>
+			<vertex pos="-3.1 -17.9"/>
+			<vertex pos="-2.6 -18.9"/>
+			<vertex pos="-1.1 -21.6"/>
+			<vertex pos="1.8 -22.8"/>
+			<vertex pos="3.8 -23.4"/>
+			<vertex pos="5.2 -23.6"/>
+			<vertex pos="7.0 -23.8"/>
+			<vertex pos="8.9 -23.7"/>
+			<vertex pos="10.5 -23.5"/>
+			<vertex pos="12.2 -23.2"/>
+			<vertex pos="14.2 -22.8"/>
+			<vertex pos="16.6 -22.1"/>
+			<vertex pos="18.7 -21.5"/>
+			<vertex pos="20.6 -21.0"/>
+			<vertex pos="22.6 -20.3"/>
+			<vertex pos="23.2 -20.1"/>
+			<vertex pos="24.2 -19.5"/>
+			<vertex pos="24.1 -16.3"/>
+			<vertex pos="23.9 -12.8"/>
+			<vertex pos="24.3 -10.2"/>
+			<vertex pos="24.6 -8.0"/>
+			<vertex pos="25.6 -5.4"/>
+			<vertex pos="26.5 -3.5"/>
+			<vertex pos="27.6 -1.2"/>
+			<vertex pos="28.4 -0.2"/>
+			<vertex pos="27.0 0.5"/>
+			<vertex pos="24.7 1.6"/>
+			<vertex pos="22.1 2.5"/>
+			<vertex pos="19.2 3.4"/>
+			<vertex pos="15.2 4.2"/>
+			<vertex pos="11.5 4.9"/>
+			<vertex pos="7.1 5.3"/>
+			<vertex pos="4.6 5.4"/>
+			<vertex pos="1.6 5.4"/>
+			<vertex pos="-1.5 5.3"/>
+			<vertex pos="-3.0 4.4"/>
+			<vertex pos="-4.1 3.5"/>
+			<vertex pos="-6.0 1.2"/>
+			<vertex pos="-7.0 -1.9"/>
+			<vertex pos="-7.0 -5.1"/>
+		</voxagon>
+		<voxagon tags="unbreakable" pos="54.85639 1.15 16.00081" brush="MOD/assets/brush/fundaments.vox" object="concrete_medium" extrude="12">
+			<vertex pos="-6.5 -7.9"/>
+			<vertex pos="-5.6 -10.5"/>
+			<vertex pos="-4.5 -13.5"/>
+			<vertex pos="-3.7 -16.1"/>
+			<vertex pos="-3.1 -17.9"/>
+			<vertex pos="-2.6 -18.9"/>
+			<vertex pos="-1.1 -21.6"/>
+			<vertex pos="1.8 -22.8"/>
+			<vertex pos="3.8 -23.4"/>
+			<vertex pos="5.2 -23.6"/>
+			<vertex pos="7.0 -23.8"/>
+			<vertex pos="8.9 -23.7"/>
+			<vertex pos="10.5 -23.5"/>
+			<vertex pos="12.2 -23.2"/>
+			<vertex pos="14.2 -22.8"/>
+			<vertex pos="16.6 -22.1"/>
+			<vertex pos="18.7 -21.5"/>
+			<vertex pos="20.6 -21.0"/>
+			<vertex pos="22.6 -20.3"/>
+			<vertex pos="23.2 -20.1"/>
+			<vertex pos="24.2 -19.5"/>
+			<vertex pos="24.1 -16.3"/>
+			<vertex pos="23.9 -12.8"/>
+			<vertex pos="24.3 -10.2"/>
+			<vertex pos="24.6 -8.0"/>
+			<vertex pos="25.6 -5.4"/>
+			<vertex pos="26.5 -3.5"/>
+			<vertex pos="27.6 -1.2"/>
+			<vertex pos="28.4 -0.2"/>
+			<vertex pos="27.0 0.5"/>
+			<vertex pos="24.7 1.6"/>
+			<vertex pos="22.1 2.5"/>
+			<vertex pos="19.2 3.4"/>
+			<vertex pos="15.2 4.2"/>
+			<vertex pos="11.5 4.9"/>
+			<vertex pos="7.1 5.3"/>
+			<vertex pos="4.6 5.4"/>
+			<vertex pos="1.6 5.4"/>
+			<vertex pos="-1.5 5.3"/>
+			<vertex pos="-3.0 4.4"/>
+			<vertex pos="-4.1 3.5"/>
+			<vertex pos="-6.0 1.2"/>
+			<vertex pos="-7.0 -1.9"/>
+			<vertex pos="-7.0 -5.1"/>
+		</voxagon>
+		<group name="interior">
+			<vox pos="7.17559 2.8 -5.16363" rot="0.0 90.0 0.0" file="MOD/assets/buildings/vox/Gasstation interior/counter_shop.vox"/>
+			<vox pos="5.937 2.8 -8.476" rot="0.0 -90.0 0.0" prop="true" file="MOD/assets/buildings/vox/Gasstation interior/shelves_1.vox"/>
+			<vox pos="6.329 2.8 -9.149" rot="0.0 90.0 0.0" prop="true" file="MOD/assets/buildings/vox/Gasstation interior/shelves_1.vox"/>
+			<vox pos="5.411 2.8 -14.415" rot="0.0 0.0 0.0" prop="true" file="MOD/assets/buildings/vox/Gasstation interior/bluetide_vending_machine.vox"/>
+			<vox pos="8.831 2.8 -14.881" rot="0.0 0.0 0.0" prop="true" file="MOD/assets/buildings/vox/Gasstation interior/freezer.vox"/>
+			<vox pos="6.181 2.8 -11.484" rot="0.0 0.0 0.0" prop="true" file="MOD/assets/buildings/vox/Gasstation interior/shelves_2.vox"/>
+			<vox pos="1.64957 2.8 -11.309" rot="0.0 -40.0 0.0" prop="true" file="MOD/assets/buildings/vox/Gasstation interior/canister_large.vox"/>
+			<vox pos="1.96543 2.8 -13.34993" rot="0.0 0.0 0.0" prop="true" file="MOD/assets/buildings/vox/Gasstation interior/canister_crate.vox"/>
+			<vox pos="3.74108 2.8 -11.47351" rot="0.0 50.0 0.0" prop="true" file="MOD/assets/buildings/vox/Gasstation interior/canister_crate_pallet.vox"/>
+			<vox pos="6.064 2.8 -3.333" rot="0.0 0.0 0.0" prop="true" file="MOD/assets/buildings/vox/Gasstation interior/shelves_3.vox"/>
+			<instance pos="5.03683 5.4 -12.75112" rot="0.0 90.0 0.0" file="MOD/assets/industrial/lamp-wall-fluorecent-long.xml"/>
+			<instance pos="5.03685 5.4 -6.25112" rot="0.0 90.0 0.0" file="MOD/assets/industrial/lamp-wall-fluorecent-long.xml"/>
+			<instance pos="9.79577 5.4 -9.52668" rot="0.0 -90.0 0.0" file="MOD/assets/industrial/lamp-wall-fluorecent-short.xml"/>
+			<instance pos="10.7 5.7 -5.8" rot="0.0 90.0 0.0" file="MOD/assets/industrial/lamp-wall-fluorecent-long.xml"/>
+			<instance pos="19.90001 5.8 -11.5" rot="0.0 -90.0 0.0" file="MOD/assets/industrial/lamp-wall-fluorecent-long.xml"/>
+			<instance pos="14.00001 5.8 -11.49997" rot="0.0 -90.0 0.0" file="MOD/assets/industrial/lamp-wall-fluorecent-long.xml"/>
+			<instance pos="14.60001 5.8 -11.49998" rot="0.0 90.0 0.0" file="MOD/assets/industrial/lamp-wall-fluorecent-long.xml"/>
+			<instance pos="7.37852 5.4 -3.36786" rot="0.0 180.0 0.0" file="MOD/assets/industrial/lamp-wall-fluorecent-long.xml"/>
+		</group>
+	</group>
+</prefab>
+
