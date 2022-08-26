@@ -443,6 +443,7 @@ function playerPhysicsUpdate(dt)
 
         if VecLength(FinalVel)+0.02<VecLength(onPlanetVel) and player.onGround then
             dontMove = false
+            player.vel = VecAdd(player.vel,VecScale(GetBodyVelocityAtPos(GetShapeBody(shape),point),dt))
             if player.inputDown == false then 
                 local coef = clamp(1+(VecLength(player.vel)-10)/10,0.85,1)
                 player.vel = VecScale(player.vel,coef)
@@ -572,6 +573,8 @@ function tick(dt)
     updatePlayerCamera(dt)
     playerTool(dt)
 
+
+    
     if InputPressed("h") then 
         if player.camera == "camera" then 
             player.camera = "player"

@@ -57,7 +57,7 @@ function gravityUpdate(dt)
                     end
                     vel = VecAdd(vel,VecScale(dir,strength))
                 end
-            end       
+            end
             for i=1,#gravityFields do
                 local field = gravityFields[i] 
                 local strength = 0

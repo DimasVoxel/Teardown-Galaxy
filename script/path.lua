@@ -4,15 +4,20 @@
 function init()
 
 
-    totalSegments = GetIntParam("totalsegments", 100)
+    totalSegments = 20--GetIntParam("totalsegments", 100)
 
     bez = {}
 
     segments = FindBodies("segment")
     for i=1, #segments do 
         table.insert(bez,GetBodyTransform(segments[i]))
+        --table.insert(bez,getGoodTransform(segments[i]))
+
     end
 
+
+    blocs = {}
+    sizes = {}
     local t = Transform()
     local prev = Transform()
 
@@ -22,17 +27,36 @@ function init()
         else 
             t = bezier(bez,i/totalSegments)
 
-            local dist = AutoVecDist(prev.pos,t.pos)*10
+            local dist = math.ceil(VecLength(VecSub(prev.pos,t.pos))*10)
             local middle = dist/10/2
             local XML = [[
                 <body pos="0 0 0" dynamic="false">
                     <voxbox pos="-3 -0.25 ]]..middle..[[" rot="0" size="60 5 ]]..dist..[["/>
                 </body>
             ]]
-            Spawn(XML,t,true)
+            local st = getGoodTransformT(t, Vec(6, 0.5, dist / 10))
+            local rot = QuatLookAt(prev.pos, st.pos)
+            st.rot = rot
+            local ent = Spawn(XML,st,true)
             prev = TransformCopy(t)
+            for i=1, #ent do
+                if GetEntityType(ent[i]) == "body" then
+                    blocs[#blocs + 1] = ent[i]
+                    sizes[#sizes + 1] = Vec(60 / 10, 5 / 10, dist / 10)
+                    break
+                end
+            end
         end
     end
+    
+end
+-- put this in your file
+function getGoodTransformT(t, size)
+    local dx = size[1]
+    local dy = size[2]
+    local dz = size[3]
+    local b = Vec(0, 0, -dz/2)
+    return Transform(TransformToParentPoint(t, b))
 end
 
 function TransformLerp(a,b,t)
