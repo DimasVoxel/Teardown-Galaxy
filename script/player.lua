@@ -61,7 +61,7 @@ function playerInit()
     player.parent = 0 
     player.camera = true
     local hit, shape, point = IsPlayerOnGround()
-    player.onGroud = hit
+    player.onGround = hit
     player.contactPoint = point
     player.onPlanetTransform = -1
 
@@ -401,7 +401,6 @@ function playerPhysicsUpdate(dt)
     player.rot = QuatRotateQuat(down,QuatEuler(0,camerax,0))
 
 
-
     
     
     SetBodyTransform(player.body,Transform(player.pos,player.rot))
@@ -436,14 +435,27 @@ function playerPhysicsUpdate(dt)
     local hit, shape, point = IsPlayerOnGround()
     local planetBody = GetShapeBody(shape)
     local bt = GetBodyTransform(planetBody)
+
+   
+
     if hit and HasTag(planetBody,"planet") then
         local FinalVel = GetBodyVelocityAtPos(planetBody,player.contactPoint)
         local onPlanetVel = TransformToLocalVec(player.transform,player.vel)
-        
+        local FinalVelNum = VecLength(FinalVel)
+        local onPlanetVelNum = VecLength(onPlanetVel)
 
-        if VecLength(FinalVel)+0.02<VecLength(onPlanetVel) and player.onGround then
+        if onPlanetVelNum < 0.001 then -- For some reason this number is never 0
+            onPlanetVelNum = 0
+        end
+        if FinalVelNum == 0 then -- This is just for static planets
+            FinalVelNum = FinalVelNum+0.05
+        end
+
+        local bool = FinalVelNum<onPlanetVelNum or FinalVelNum == onPlanetVelNum
+
+        if bool and player.onGround then
             dontMove = false
-            player.vel = VecAdd(player.vel,VecScale(GetBodyVelocityAtPos(GetShapeBody(shape),point),dt))
+            --player.vel = VecAdd(player.vel,VecScale(GetBodyVelocityAtPos(GetShapeBody(shape),point),dt))
             if player.inputDown == false then 
                 local coef = clamp(1+(VecLength(player.vel)-10)/10,0.85,1)
                 player.vel = VecScale(player.vel,coef)
@@ -454,14 +466,15 @@ function playerPhysicsUpdate(dt)
                 dontMove = true
             end
             local camerax = InputValue("camerax")*-60
+     
             player.onPlanetTransform.rot = QuatRotateQuat(player.onPlanetTransform.rot,QuatEuler(0,camerax,0))
             local newT = TransformToParentTransform(bt,player.onPlanetTransform)
-            SetBodyTransform(player.body,Transform(VecLerp(newT.pos,player.pos,0.9),newT.rot))
+            SetBodyTransform(player.body,Transform(VecLerp(newT.pos,player.pos,0.92),newT.rot))
         end
     else
         dontMove = false
     end
-
+   
     -------------------------------------------------- Gravity --------------------------------------------------
 
      --SetPlayerTransform(t,true)
@@ -573,7 +586,9 @@ function tick(dt)
     updatePlayerCamera(dt)
     playerTool(dt)
 
-
+    if InputDown("c") then 
+        DebugPrint("")
+    end
     
     if InputPressed("h") then 
         if player.camera == "camera" then 
