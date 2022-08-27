@@ -4,7 +4,7 @@
 function init()
 
 
-    totalSegments = 20--GetIntParam("totalsegments", 100)
+    totalSegments = GetIntParam("totalsegments", 100)
 
     bez = {}
 
@@ -12,7 +12,6 @@ function init()
     for i=1, #segments do 
         table.insert(bez,GetBodyTransform(segments[i]))
         --table.insert(bez,getGoodTransform(segments[i]))
-
     end
 
 
@@ -30,7 +29,7 @@ function init()
             local dist = math.ceil(VecLength(VecSub(prev.pos,t.pos))*10)
             local middle = dist/10/2
             local XML = [[
-                <body pos="0 0 0" dynamic="false">
+                <body pos="0 0 0" dynamic="false" tags="triggerparent">
                     <voxbox pos="-3 -0.25 ]]..middle..[[" rot="0" size="60 5 ]]..dist..[["/>
                 </body>
             ]]
@@ -48,9 +47,8 @@ function init()
             end
         end
     end
-    
 end
--- put this in your file
+
 function getGoodTransformT(t, size)
     local dx = size[1]
     local dy = size[2]

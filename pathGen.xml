@@ -36,5 +36,16 @@
 	<voxbox pos="10.7 13.9 38.40001" rot="0.0 0.0 0.0" size="59 8 217"/>
 	<script file="main.lua"/>
 	<script file="sandbox.lua"/>
+	<group name="instance=MOD/prefab/road.xml" pos="3.5 0.0 1.0" rot="0.0 0.0 0.0">
+		<script pos="0.0" rot="00 0.0 0.0" file="MOD/script/triggerTransform.lua">
+			<body tags="triggerparent" pos="0.0 0.0 0.0" dynamic="false">
+				<voxbox pos="0.0 0.0 0.0" size="70 15 90" brush="MOD/vox/road.vox">
+					<trigger tags="gravityfield mass=1000 type=local exclusive" pos="3.5 0.0 4.5" type="box" size="7 8 9"/>
+				</voxbox>
+			</body>
+		</script>
+	</group>
+	<script file="MOD/script/gravity.lua"/>
+	<instance pos="3.3 0.0 9.1" file="MOD/prefab/van.xml"/>
 </scene>
 
