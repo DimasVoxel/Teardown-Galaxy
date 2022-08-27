@@ -1,3 +1,15 @@
+--[[
+Add this script to any plenet for it to stay hovering.
+
+Right now it will always try to keep it at the same place as it spawned at.
+It will also spin the planet
+
+Planet Body has to be dynamic
+
+]]
+
+
+
 function init()
     local planetShape = FindShape('planet')
     planet = {}
@@ -28,5 +40,5 @@ end
 function update(dt)
     planetUpdate(dt)
     planetPhysics(dt)
-    
 end
+
