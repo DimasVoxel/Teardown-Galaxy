@@ -1,6 +1,6 @@
 name = Teardown Galaxy
 author = Dima's Voxel
-description = Fly between planets and enjoy your time
+description = A sandbox demo map showcasing custom gravity
 tags=content,map,gameplay
 
 # If description contains [noupload] the description on Steam workshop will not be overwritten.
