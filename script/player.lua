@@ -99,6 +99,7 @@ function attractorsUpdate()
         field.strength = GetTagValue(trigger, "mass")
         field.type = GetTagValue(trigger, "type") -- can be either global gravity(like planet but long) or local only apply if in trigegr
         field.exclusive = HasTag(trigger, "exclusive") -- if exclusive then ignore all other gravity fields
+        if HasTag(trigger,"shape") then field.shape = GetTagValue(trigger, "shape") else field.shape = "box" end -- can be either box or sphere
         field.pullDir = TransformToParentVec(field.transform, Vec(0,-1,0))
         gravityFields[num] = field
     end
@@ -185,11 +186,16 @@ function attractorGravity(dt)
             player.vel = VecAdd(player.vel,VecScale(dir,strength))
         elseif field.type == "local" then
             if IsPointInTrigger(field.trigger, pCenter) then
-                dir = VecCopy(field.pullDir)
+                if field.shape == sphere then
+                    local aa, bb = GetTriggerBounds(field.trigger) 
+                    dir = VecSub
+                else 
+                    dir = VecCopy(field.pullDir)
+                end 
                 strength = dt*(gravConst*field.strength / (dist * dist))
                 if field.exclusive == true then 
                     player.vel = VecAdd(Vec(0,10*dt,0),GetBodyVelocity(player.body))
-                    player.vel = VecAdd(player.vel,VecScale(field.pullDir,strength))
+                    player.vel = VecAdd(player.vel,VecScale(dir,strength))
                     player.parent = field
                     player.inGravity = "attractor"
                     player.strongestGravity = strength
@@ -200,7 +206,7 @@ function attractorGravity(dt)
                     player.inGravity = "attractor"
                     player.strongestGravity = strength
                 end
-                player.vel = VecAdd(player.vel,VecScale(field.pullDir,strength))
+                player.vel = VecAdd(player.vel,VecScale(dir,strength))
             end
         end
     end
@@ -320,7 +326,7 @@ function playerTool(dt)
             end
         end
 
-        if GetPlayerInteractBody() == tool.hookBody and InputDown("interact") then 
+        if GetPlayerInteractBody() == tool.hookBody and InputDown("interact") or InputDown("E") then 
             SetBool("game.tool.grapple_loaded.enabled", true)
             SetBool("game.tool.grapple_shot.enabled", false)
             SetString("game.player.tool", "grapple_loaded")
@@ -590,15 +596,16 @@ function tick(dt)
         DebugPrint("")
     end
     
-    if InputPressed("h") then 
-        if player.camera == "camera" then 
-            player.camera = "player"
-        elseif player.camera == "player" then
-            player.camera = "independent"
-        elseif player.camera == "independent" then
-            player.camera = "camera"
-        end
-    end
+  -- if InputPressed("h") then 
+  --     if player.camera == "camera" then 
+  --         player.camera = "player"
+  --     elseif player.camera == "player" then
+  --         player.camera = "independent"
+  --     elseif player.camera == "independent" then
+  --         player.camera = "camera"
+  --     end
+  -- end
+  
 end
 
 function rebound(value, min, max)
@@ -631,4 +638,39 @@ function draw(dt)
    --     local x, y = UiWorldToPixel(closestPoint)
    --     UiTooltip(strength,2,"center",{x,y},5)
    -- end
+
+
+    UiPush()
+    UiTranslate(1900,10)
+    UiAlign("top right")
+    UiFont("bold.ttf", 24)
+    UiText("Press H to change player mode")
+    UiTranslate(0,25)
+    if player.camera == "independent" then 
+        UiText("Custom Gravity Off")
+    elseif player.camera == "player" then
+        UiText("Custom Gravity On")
+    end
+   UiPop()
+
+    if InputPressed("h") then 
+        if player.camera == "independent" then 
+            player.camera = "player"
+        elseif player.camera == "player" then
+            player.camera = "independent"
+        end
+    end
+
+    if GetString("game.player.tool") == "grapple_shot" then
+    UiPush()
+        UiTranslate(UiCenter(), UiHeight()-100)
+        UiAlign("center")
+        UiFont("bold.ttf", 24)
+        UiText("Press E to return hook")
+        if tool.hookEngaged then 
+            UiTranslate(0, 25)
+            UiText("Hold left click to reel in hook")
+        end
+    UiPop()
+    end
 end
