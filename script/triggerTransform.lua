@@ -12,12 +12,6 @@ function init()
         trigger.localTransform = TransformToLocalTransform(bt, tt)
         triggers[i] = trigger
     end
-
-
-
-
-    DebugWatch("trigger", trigger)
-    DebugWatch("body",body)
 end
 
 function tick()
@@ -26,6 +20,6 @@ function tick()
     for i=1,#triggers do 
         local trigger = triggers[i]
         SetTriggerTransform(trigger.trigger, TransformToParentTransform(bt, trigger.localTransform))
-        DebugLine(GetTriggerTransform(trigger.trigger).pos,TransformToParentPoint(GetTriggerTransform(trigger.trigger),Vec(0,5,0)),1,1,1,1)
+       -- DebugLine(GetTriggerTransform(trigger.trigger).pos,TransformToParentPoint(GetTriggerTransform(trigger.trigger),Vec(0,5,0)),1,1,1,1)
     end
 end
