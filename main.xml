@@ -262,7 +262,7 @@
 				</body>
 			</script>
 			<script pos="10.0 18.49998 -0.10002" rot="-20.0 -180.0 0.0" file="MOD/script/triggerTransform.lua">
-				<body tags="triggerparent" pos="0.0" rot="0" dynamic="true">
+				<body tags="triggerparent" pos="0.0" rot="0" dynamic="false">
 					<voxbox pos="-1.4 0.0 0.0" rot="0.0 0.0 0.0" size="64 15 62">
 						<trigger tags="gravityfield mass=600 type=local exclusive" pos="3.2 1.4 3.1" rot="0" type="box" size="6.4 3.5 6.2"/>
 					</voxbox>
