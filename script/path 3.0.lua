@@ -1,29 +1,91 @@
 #include ./Automatic-Framework/Automatic.lua
 
 function init()
-    totalSegments = GetIntParam("totalsegments", 100)
+    totalSegments = 3*GetIntParam("totalsegments", 20)
+
     bez = {}
 
     segments = FindBodies("segment")
+
     for i=1, #segments do 
         table.insert(bez,GetBodyTransform(segments[i]))
-        --table.insert(bez,getGoodTransform(segments[i]))
     end
 
     curve = {}
+    local smooth = {}
+    local i = 1
+    while (i < #bez) do
+        local newList = {}
+        local segment = {}
+        
+        for j=1, 3 do
+            if i > #bez then 
+                i = i + 1
+                break
+            end
+            newList[j] = TransformCopy(bez[i])
+            i = i + 1
+        end
+      
+        local c = #newList/3
+        local segments = totalSegments*c
 
-    for i=1, totalSegments do
-        local info = {}
-        info.t = bezier(bez,i/totalSegments)
-        curve[i] = info
+        for j=1 , segments do
+            DebugPrint(#smooth)
+            if #smooth ~= 0 and #segment/3 < j   then  
+                local smoothInfo = smooth[j]
+                local info = {}
+                info.t = TransformLerp(bezier(newList,j/segments),smoothInfo.t,0.5)
+                segment[j] = info 
+            else 
+                local info = {}
+                info.t = bezier(newList,j/segments)
+                segment[j] = info 
+            end
+        end
+
+        smooth = {}
+        for j=#segment-#segment/3, #segment do 
+            local info = segment[j]
+            smooth[#smooth+1] = info
+        end
+
+        for j=1, #segment-#segment/3 do 
+            curve[#curve+1] = segment[j]
+        end
+
+
+
+
+        i = i - 2
     end
+
 
     for i=1, #curve do
         if i ~= 1 then
             local infoCur = curve[i]
             local infoPrev = curve[i-1]
-            infoCur.dist = AutoVecDist(infoCur.t.pos,infoPrev.t.pos)
+            infoCur.dist = AutoVecDist(infoCur.t.pos,infoPrev.t.pos)*10
             infoCur.rotChange = TransformToLocalQuat(infoCur.t,infoPrev.t.rot)
+            
+            curve[i] = infoCur
+        end
+    end
+
+    for i=1, #curve do
+        if i ~= 1 then
+            local info = curve[i]
+            XML= [[
+                <script pos="0.0" rot="00 0.0 0.0" file="MOD/script/triggerTransform.lua">
+                    <body tags="triggerparent ground" pos="0.0 0.0 0.0" dynamic="false">
+                        <voxbox pos="0.0 0.0 0.0" size="70 15 ]]..info.dist..[[" brush="MOD/vox/road.vox">
+                            <trigger tags="gravityfield mass=1000 type=local exclusive" pos="3.5 0.0 ]].. (info.dist/2/10).. [[" type="box" size="7 8 ]]..info.dist..[["/>
+                        </voxbox>
+                    </body>
+                </script>
+            ]]
+                                                --pos is half of the size of the road and devided by 10
+            --Spawn(XML,info.t,true)
         end
     end
 end
@@ -59,6 +121,9 @@ end
 
 function bezier(lerparray, frame)
     local newlerparray = {}
+    if #lerparray == 1 then 
+        return lerparray[1]
+    end
     while #lerparray > 1 do 
         for i=1, #lerparray-1 do
             table.insert(newlerparray,TransformLerp(lerparray[i],lerparray[i+1],frame))

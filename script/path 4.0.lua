@@ -1,30 +1,68 @@
 #include ./Automatic-Framework/Automatic.lua
 
 function init()
-    totalSegments = GetIntParam("totalsegments", 100)
+    roadPiece = 3*GetIntParam("totalsegments", 20)
+
     bez = {}
 
     segments = FindBodies("segment")
+
     for i=1, #segments do 
         table.insert(bez,GetBodyTransform(segments[i]))
-        --table.insert(bez,getGoodTransform(segments[i]))
     end
-
+  
+    
     curve = {}
+    local smooth = {}
+    local i = 1
+    while (i < #bez) do
+        local newList = {}
+        local segment = {}
 
-    for i=1, totalSegments do
-        local info = {}
-        info.t = bezier(bez,i/totalSegments)
-        curve[i] = info
-    end
-
-    for i=1, #curve do
-        if i ~= 1 then
-            local infoCur = curve[i]
-            local infoPrev = curve[i-1]
-            infoCur.dist = AutoVecDist(infoCur.t.pos,infoPrev.t.pos)
-            infoCur.rotChange = TransformToLocalQuat(infoCur.t,infoPrev.t.rot)
+        for j=1, 3 do
+            if i > #bez then 
+                i = i + 1
+                break
+            end
+            newList[#newList+1] = TransformCopy(bez[i])
+            i = i + 1
         end
+
+        local c = #newList/3
+        local roadPieces = roadPiece*c
+        DebugPrint(#smooth)
+        if #smooth ~= 0 then 
+            for j=1, #smooth do 
+                local smoothInfo = smooth[j]
+                local info = {}
+                info.t = TransformLerp(bezier(newList,j/roadPieces),smoothInfo.t,0.5)
+                segment[#segment+1] = info 
+            end
+
+            for j=#smooth, roadPieces do
+                local info = {}
+                info.t = bezier(newList,j/roadPieces)
+                segment[#segment+1] = info 
+            end
+        else 
+            for j=1 , roadPieces do
+                local info = {}
+                info.t = bezier(newList,j/roadPieces)
+                segment[#segment+1] = info
+            end
+        end
+        
+        smooth = {}
+        for j=(#segment-#segment/3)+1, #segment do 
+            local info = segment[j]
+            smooth[#smooth+1] = info
+        end
+        for j=1, (#segment-(#segment/3)) do 
+            curve[#curve+1] = segment[j]
+        end
+
+
+        i = i - 2
     end
 end
 
@@ -59,6 +97,9 @@ end
 
 function bezier(lerparray, frame)
     local newlerparray = {}
+    if #lerparray == 1 then 
+        return lerparray[1]
+    end
     while #lerparray > 1 do 
         for i=1, #lerparray-1 do
             table.insert(newlerparray,TransformLerp(lerparray[i],lerparray[i+1],frame))

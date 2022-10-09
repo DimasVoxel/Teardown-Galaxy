@@ -2,30 +2,33 @@
 	<body pos="-3.5 18.9 40.9" dynamic="false">
 		<voxbox pos="-2.5 -0.25 -2.5" rot="0" size="50 5 50"/>
 	</body>
-	<script file="MOD/script/path.lua" param0="totalsegments00">
+	<script file="MOD/script/path 5.0.lua" param0="totalsegments=3">
 		<group pos="11.75 14.65 37.55" rot="0.0 0.0 0.0">
 			<body tags="segment=1" pos="1.85 0.05 0.05" dynamic="true">
-				<voxbox pos="-1.85 0.0 -0.8" size="36 1 8" brush="MOD/vox/arrowInvis.vox"/>
-			</body>
-			<body tags="segment" pos="1.85 0.05 -2.05" dynamic="true">
 				<voxbox pos="-1.85 0.0 -0.8" size="36 1 8" brush="MOD/vox/arrowInvis.vox"/>
 			</body>
 			<body tags="segment" pos="1.85 1.05 -7.85" rot="20.0 0.0 0.0" dynamic="true">
 				<voxbox pos="-1.85 0.0 -0.8" size="36 1 8" brush="MOD/vox/arrowInvis.vox"/>
 			</body>
-			<body tags="segment" pos="1.85 3.65 -13.55" rot="0.0 0.0 0.0" dynamic="true">
+			<body tags="segment" pos="1.85 5.75 -13.55" rot="0.0 0.0 0.0" dynamic="true">
 				<voxbox pos="-1.85 0.0 -0.8" size="36 1 8" brush="MOD/vox/arrowInvis.vox"/>
 			</body>
-			<body tags="segment" pos="1.85 3.65 -26.35" rot="-10.0 0.0 0.0" dynamic="true">
+			<body tags="segment" pos="1.85 0.75 -21.05" rot="0.0 0.0 0.0" dynamic="true">
 				<voxbox pos="-1.85 0.0 -0.8" size="36 1 8" brush="MOD/vox/arrowInvis.vox"/>
 			</body>
-			<body tags="segment" pos="1.85 2.25 -35.85" rot="30.0 0.0 0.0" dynamic="true">
+			<body tags="segment" pos="1.85 3.65 -29.95" rot="0.0 0.0 0.0" dynamic="true">
 				<voxbox pos="-1.85 0.0 -0.8" size="36 1 8" brush="MOD/vox/arrowInvis.vox"/>
 			</body>
-			<body tags="segment" pos="1.85 7.75 -41.75" rot="70.0 0.0 0.0" dynamic="true">
+			<body tags="segment" pos="1.85 11.15 -48.45" rot="0.0 0.0 0.0" dynamic="true">
 				<voxbox pos="-1.85 0.0 -0.8" size="36 1 8" brush="MOD/vox/arrowInvis.vox"/>
 			</body>
-			<body tags="segment" pos="1.85 14.35 -41.75" rot="90.0 0.0 0.0" dynamic="true">
+			<body tags="segment" pos="1.85 0.15 -53.05" rot="0.0 0.0 0.0" dynamic="true">
+				<voxbox pos="-1.85 0.0 -0.8" size="36 1 8" brush="MOD/vox/arrowInvis.vox"/>
+			</body>
+			<body tags="segment" pos="1.85 6.15 -65.25" rot="0.0 0.0 0.0" dynamic="true">
+				<voxbox pos="-1.85 0.0 -0.8" size="36 1 8" brush="MOD/vox/arrowInvis.vox"/>
+			</body>
+			<body tags="segment" pos="1.85 21.05 -65.25" rot="0.0 0.0 0.0" dynamic="true">
 				<voxbox pos="-1.85 0.0 -0.8" size="36 1 8" brush="MOD/vox/arrowInvis.vox"/>
 			</body>
 		</group>
@@ -36,16 +39,16 @@
 	<voxbox pos="10.7 13.9 38.40001" rot="0.0 0.0 0.0" size="59 8 217"/>
 	<script file="main.lua"/>
 	<script file="sandbox.lua"/>
-	<group name="instance=MOD/prefab/road.xml" pos="3.5 0.0 1.0" rot="0.0 0.0 0.0">
+	<group name="instance=MOD/prefab/road.xml" pos="0.8 6.0 2.2" rot="70.0 0.0 0.0">
 		<script pos="0.0" rot="00 0.0 0.0" file="MOD/script/triggerTransform.lua">
 			<body tags="triggerparent" pos="0.0 0.0 0.0" dynamic="false">
-				<voxbox pos="0.0 0.0 0.0" size="70 15 90" brush="MOD/vox/road.vox">
+				<voxbox tags="unbreakable" pos="0.0 0.0 0.0" size="70 15 90" brush="MOD/vox/road.vox">
 					<trigger tags="gravityfield mass=1000 type=local exclusive" pos="3.5 0.0 4.5" type="box" size="7 8 9"/>
 				</voxbox>
 			</body>
 		</script>
 	</group>
 	<script file="MOD/script/gravity.lua"/>
-	<instance pos="3.3 0.0 9.1" file="MOD/prefab/van.xml"/>
+	<instance pos="3.3 5.2 9.1" rot="70.0 0.0 0.0" file="MOD/prefab/van.xml"/>
 </scene>
 
